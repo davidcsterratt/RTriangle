@@ -135,7 +135,7 @@ int reportnorms;
 /*                                                                           */
 /*****************************************************************************/
 
-SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y)
+SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y, SEXP j, SEXP V, SEXP Q)
 {
   /* Output variables */
   SEXP oP, oPB, oT, oS, oSB, oE, oEB;
@@ -165,8 +165,12 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y)
   in.numberofholes = 0;
   in.numberofregions = 0;
 
-  printf("Input point set:\n\n");
-  report(&in, 1, 0, 0, 1, 0, 0);
+  if (isInteger(V)) {
+    if (*INTEGER(V) >= 1) {
+      printf("Input point set:\n\n");
+      report(&in, 1, 0, 0, 1, 0, 0);
+    }
+  }
 
   /* Make necessary initializations so that Triangle can return a */
   /*   triangulation in `mid' and a voronoi diagram in `vorout'.  */
@@ -214,13 +218,35 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y)
       strcat(flags, "Y");
     }
   }
+  if (isLogical(j)) {
+    if (*LOGICAL(j) == TRUE) {
+      strcat(flags, "j");
+    }
+  }
+  if (isInteger(V)) {
+    if (*INTEGER(V) == 1) {
+      strcat(flags, "V");
+    }
+    if (*INTEGER(V) == 2) {
+      strcat(flags, "VV");
+    }
+  }
+  if (isLogical(Q)) {
+    if (*LOGICAL(Q) == TRUE) {
+      strcat(flags, "Q");
+    }
+  }
 
   triangulate(flags, &in, &mid, &vorout);
 
-  printf("Initial triangulation:\n\n");
-  report(&mid, 1, 1, 1, 1, 1, 0);
-  printf("Initial Voronoi diagram:\n\n");
-  report(&vorout, 0, 0, 0, 0, 1, 1);
+  if (isInteger(V)) {
+    if (*INTEGER(V) >= 1) {
+      printf("Initial triangulation:\n\n");
+      report(&mid, 1, 1, 1, 1, 1, 0);
+    }
+  }
+  /* printf("Initial Voronoi diagram:\n\n");
+     report(&vorout, 0, 0, 0, 0, 1, 1); */
 
   /* Attach area constraints to the triangles in preparation for */
   /*   refining the triangulation.                               */
@@ -249,7 +275,6 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y)
   /* report(&out, 0, 1, 0, 0, 0, 0); */
 
   /* Make space for answers */
-  printf("Number of output points %d", mid.numberofpoints);
   PROTECT(oP  = allocMatrix(REALSXP, mid.numberofpoints, 2));
   PROTECT(oPB = allocMatrix(INTSXP,  mid.numberofpoints, 1));
   PROTECT(oT  = allocMatrix(INTSXP,  mid.numberoftriangles, 3));
