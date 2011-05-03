@@ -26,6 +26,10 @@ triangulate <- function(P, S=NULL, a=NULL, q=NULL, Y=FALSE, j=FALSE,
   if (ncol(P) == 2) {
     P <- t(P)
   }
+  ## Check that there are no duplicate rows in P
+  if (anyDuplicated(t(P))) {
+    stop("Duplicated points in P.")
+  }
   PB <- rep(1, ncol(P))
 
   ## Deal with S
