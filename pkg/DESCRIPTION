@@ -1,7 +1,7 @@
 Package: Triangle
 Version: 1.6-0.9
 Date: 2011-05-04
-Title: Triangle: A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator
+Title: Triangle: A 2D Quality Mesh Generator and Delaunay Triangulator
 Author: David C. Sterratt <david.c.sterratt@ed.ac.uk>
 Maintainer: David C. Sterratt <david.c.sterratt@ed.ac.uk>
 Depends: R (>= 2.9.0)
