@@ -14,6 +14,12 @@ package: roxygen
 install: package
 	R CMD INSTALL --latex $(PACKAGE) 
 
+doc: package
+	R CMD Rd2dvi --pdf pkg
+
+check:
+	R CMD check $(PACKAGE)
+
 revision:
 	@echo $(TRIANGLE_SVN_REVISION)
 	@echo $(TRIANGLE_SVN_REVISION1)
