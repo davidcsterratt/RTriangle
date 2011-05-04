@@ -16,4 +16,4 @@ URL: http://triangle.R-Forge.R-project.org,
     http://www.cs.cmu.edu/~quake/triangle.html
 Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard
     Shewchuk; 2011 David Sterratt
-Collate: 'triangle.R' 'triangle.R~' 'zzz.R'
+Collate: 'triangle.R' 'zzz.R'
