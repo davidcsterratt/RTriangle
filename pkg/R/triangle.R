@@ -1,26 +1,23 @@
-triangle.check.na.nan <- function(x) {
-  if (!is.null(x)) {
-    if (any(is.nan(x))) {
-      stop(paste("NaN in", deparse(substitute(x))))
-    }
-    if (any(is.na(x))) {
-      stop(paste("NA in", deparse(substitute(x))))
-    }
-  }
-}
-
-##if (is.loaded("R_triangulate")) dyn.unload("R_triangle.so")
-##dyn.load("R_triangle.so")
-
 triangulate <- function(P, S=NULL, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                         V=0, Q=FALSE) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
-  triangle.check.na.nan(P)
-  triangle.check.na.nan(S)
-  triangle.check.na.nan(a)
-  triangle.check.na.nan(q)
-  triangle.check.na.nan(V)
+  check.na.nan <- function(x) {
+    if (!is.null(x)) {
+      if (any(is.nan(x))) {
+        stop(paste("NaN in", deparse(substitute(x))))
+      }
+      if (any(is.na(x))) {
+        stop(paste("NA in", deparse(substitute(x))))
+      }
+    }
+  }
+  
+  check.na.nan(P)
+  check.na.nan(S)
+  check.na.nan(a)
+  check.na.nan(q)
+  check.na.nan(V)
 
   ## Deal with P
   if (ncol(P) == 2) {
