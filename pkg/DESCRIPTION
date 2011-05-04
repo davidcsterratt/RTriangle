@@ -5,8 +5,15 @@ Title: Triangle: A 2D Quality Mesh Generator and Delaunay Triangulator
 Author: David C. Sterratt <david.c.sterratt@ed.ac.uk>
 Maintainer: David C. Sterratt <david.c.sterratt@ed.ac.uk>
 Depends: R (>= 2.9.0)
-Description: This is a port of Jonathan Shewchuk's Triangle library to R. From his description: "Triangle generates exact Delaunay triangulations, constrained Delaunay triangulations, conforming Delaunay triangulations, Voronoi diagrams, and high-quality triangular meshes. The latter can be generated with no small or large angles, and are thus suitable for finite element analysis."
+Description: This is a port of Jonathan Shewchuk's Triangle library to
+    R. From his description: "Triangle generates exact Delaunay
+    triangulations, constrained Delaunay triangulations, conforming
+    Delaunay triangulations, Voronoi diagrams, and high-quality
+    triangular meshes. The latter can be generated with no small or
+    large angles, and are thus suitable for finite element analysis."
 License: file LICENSE
-URL: http://triangle.R-Forge.R-project.org, http://www.cs.cmu.edu/~quake/triangle.html
-Collate: 'triangle.R' 'zzz.R'
-Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard Shewchuk; 2011 David Sterratt
+URL: http://triangle.R-Forge.R-project.org,
+    http://www.cs.cmu.edu/~quake/triangle.html
+Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard
+    Shewchuk; 2011 David Sterratt
+Collate: 'triangle.R' 'triangle.R~' 'zzz.R'
