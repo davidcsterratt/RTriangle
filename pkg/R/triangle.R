@@ -1,3 +1,160 @@
+##' A Planar Straight Line Graph (PSLG) is a collection of vertices
+##' and segments. Segments are edges whose endpoints are vertices in
+##' the PSLG, and whose presence in any mesh generated from the PSLG
+##' is enforced.
+##'
+##' @title Create a Planar Straight Line Graph object
+##' @param V A 2-column matrix of x-y co-ordinates of vertices. There
+##' is one row per vertex.
+##' @param VB Vector of \emph{boundary markers} of vertices. For each
+##' vertex this is 1 if the point should be on a boundary of any mesh
+##' generated from the PSLG and 0 otherwise. There should be as many
+##' elements in \code{VB} as there are vertices in \code{V}.
+##' @param S A 2-column matrix of \emph{segments}. Segments are edges
+##' whose endpoints are vertices in the PSLG, and whose presence in
+##' any mesh generated from the PSLG is enforced. Each segment refers
+##' to the indices in \code{V} of the endpoints of the segment.  There
+##' is one row per segment.
+##' @param SB Vector of boundary markers of segments. For each segment
+##' this is 1 if the segment should be on a boundary of any mesh
+##' generated from the PSLG and 0 otherwise. There should be as many
+##' elements in \code{SB} as there are segments in \code{S}.
+##' @param H 2-column matrix of \emph{holes},  with one hole per
+##' row.Holes are specified by identifying a point inside each
+##' hole. After the triangulation is formed, Triangle creates holes by
+##' eating triangles, spreading out from each hole point until its
+##' progress is blocked by PSLG segments; you must be careful to
+##' enclose each hole in segments, or your whole triangulation might
+##' be eaten away. If the two triangles abutting a segment are eaten,
+##' the segment itself is also eaten. Do not place a hole directly on
+##' a segment; if you do, Triangle will choose one side of the segment
+##' arbitrarily.
+##' @return An object containing the input of type \code{pslg} that
+##' contains the information supplied in the inputs. This function
+##' does some sanity checking of its inputs.
+##' @author David Sterratt
+pslg <- function(V, VB=NA, S=NA, SB=NA, H=NA) {
+  ## It is necessary to check for NAs and NaNs, as the triangulate C
+  ## code crashes if fed with them
+  check.na.nan <- function(x) {
+    if (!is.null(x)) {
+      if (any(is.nan(x))) {
+        stop(paste("NaN in", deparse(substitute(x))))
+      }
+      if (any(is.na(x))) {
+        stop(paste("NA in", deparse(substitute(x))))
+      }
+    }
+  }
+  
+  check.na.nan(V)
+
+  ## Deal with V
+  if (ncol(V) == 2) {
+    V <- t(V)
+  }
+
+  ## Check that there are no duplicate rows in V
+  if (anyDuplicated(t(V))) {
+    stop("Duplicated vertices in V.")
+  }
+
+  ## If boudary vertices not specified, set them to zero
+  if (is.na(VB)) {
+    VB <- rep(0, ncol(V))
+  }
+
+  ## Deal with S
+  if (is.na(S)) {
+    S <- rbind(1:ncol(V), c(2:ncol(V),1))
+  } else {
+    if (ncol(S) == 2) {
+      S <- t(S)
+    }
+  }
+
+  ## If boundary vertices not specified, set them to zero
+  if (is.na(SB)) {
+    SB <- rep(0, ncol(S))
+  }
+
+  ## Assemble components
+  ret <- list(V=V, VB=VB, S=S, SB=SB, H=H)
+  class(ret) <- "pslg"
+  return(ret)
+}
+##' Read a Planar Straight Line Graph from a \code{.poly} file, as
+##' used in Schwchuk's Triangle library
+##' (\url{http://www.cs.cmu.edu/~quake/triangle.poly.html}).
+##'
+##' @title Read a Planar Straight Line Graph from file
+##' @param file File name of \code{.poly} file to read.
+##' @return \code{pslg} object. See \code{\link{pslg}}.
+##' @author David Sterratt
+read.pslg <- function(file) {
+  ##    * First line: <# of vertices> <dimension (must be 2)> <# of attributes> <# of boundary markers (0 or 1)>
+  ##   * Following lines: <vertex #> <x> <y> [attributes] [boundary marker]
+  ##   * One line: <# of segments> <# of boundary markers (0 or 1)>
+  ##   * Following lines: <segment #> <endpoint> <endpoint> [boundary marker]
+  ##   * One line: <# of holes>
+  ##   * Following lines: <hole #> <x> <y>
+  ##   * Optional line: <# of regional attributes and/or area constraints>
+  ##   * Optional following lines: <region #> <x> <y> <attribute> <maximum area>
+
+  dat <- scan(file)
+  N.vert <- dat[1]
+  N.dims <- dat[2]
+  N.attr <- dat[3]
+  N.boun <- dat[4]
+
+  offset <- 4
+  line.length <- 3 + N.attr + N.boun
+
+  V <- matrix(NA, 2, N.vert)
+  VB <- matrix(NA, N.boun, N.vert)
+  for (i in (1:N.vert)) {
+    V[,i] <- dat[offset+((i-1)*line.length)+(2:3)]
+    VB[,i] <- dat[offset+((i-1)*line.length)+3+(1:N.boun)]
+  }
+
+  offset <- offset + line.length*N.vert
+
+  N.seg <- dat[offset+1]
+  N.boun <- dat[offset+2]
+  line.length <- 3 + N.boun
+
+  offset <- offset + 2
+  S <- matrix(NA, 2, N.seg)
+  for (i in (1:N.seg)) {
+    S[,i] <- dat[offset+((i-1)*line.length)+(2:3)]
+  }
+
+  offset <- offset + line.length*N.seg
+
+  N.hole <- dat[offset+1]
+
+  offset <- offset + 1
+  H <- matrix(NA, 2, N.hole)
+  for (i in (1:N.hole)) {
+    H[,i] <- dat[offset+((i-1)*2)+(2:3)]
+  }
+  print(VB)
+  return(pslg(V=V, VB=VB, S=S, H=H))
+}
+
+##' Plot \code{\link{pslg}} object
+##'
+##' @title Plot \code{\link{pslg}} object
+##' @param pslg 
+##' @author David Sterratt
+plot.pslg <- function(pslg) {
+  with(pslg, {
+    plot(t(V))
+    segments(V[1,S[1,]], V[2,S[1,]],
+             V[1,S[2,]], V[2,S[2,]])
+  })
+}
+
 ##' Generate exact Delaunay triangulations, constrained Delaunay
 ##' triangulations, and high-quality triangular meshes using the
 ##' Triangle library
@@ -30,7 +187,8 @@
 ##' information about what the Triangle library is doing.
 ##' @param Q If \code{TRUE} suppresses all explanation of what the
 ##' Triangle library is doing, unless an error occurs. 
-##' @return \item{P}{Set of vertices in the triangulation.}
+##' @return
+##' \item{P}{Set of vertices in the triangulation.}
 ##' \item{PB}{Boundary markers of vertices. For each vertex this is 1
 ##' if the point is on a boundary of the triangulation and zero
 ##' otherwise.}
