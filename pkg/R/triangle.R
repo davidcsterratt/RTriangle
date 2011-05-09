@@ -37,6 +37,10 @@
 ##' @return An object containing the input of type \code{pslg} that
 ##' contains the information supplied in the inputs. This function
 ##' does some sanity checking of its inputs.
+##' @examples
+##' ## Plot PSLG
+##' data("A", package="Triangle")
+##' plot(A)
 ##' @author David Sterratt
 pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
