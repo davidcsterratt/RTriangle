@@ -182,7 +182,7 @@ read.pslg <- function(file) {
 ##' @author David Sterratt
 plot.pslg <- function(p) {
   with(p, {
-    plot(V)
+    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n")
     segments(V[S[,1],1], V[S[,1],2],
              V[S[,2],1], V[S[,2],2])
   })
@@ -194,7 +194,7 @@ plot.pslg <- function(p) {
 ##' @author David Sterratt
 plot.triangulation <- function(t) {
   with(t, {
-    plot(rbind(V))
+    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n")
     segments(V[E[,1],1], V[E[,1],2],
              V[E[,2],1], V[E[,2],2])
     segments(V[S[,1],1], V[S[,1],2],
