@@ -37,10 +37,6 @@
 ##' @return An object containing the input of type \code{pslg} that
 ##' contains the information supplied in the inputs. This function
 ##' does some sanity checking of its inputs.
-##' @examples
-##' ## Plot PSLG
-##' data("A", package="Triangle")
-##' plot(A)
 ##' @author David Sterratt
 pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
@@ -73,9 +69,9 @@ pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
     VA <- rep(0, nrow(V))
   }
   
-  ## If boudary vertices not specified, set them to zero
+  ## If boudary vertices not specified, set them to 1
   if (is.na(VB)) {
-    VB <- rep(0, nrow(V))
+    VB <- rep(1, nrow(V))
   }
 
   ## Deal with S
@@ -87,13 +83,16 @@ pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
     }
   }
 
-  ## If boundary vertices not specified, set them to zero
+  ## If boundary segments not specified, set them to 1
   if (any(is.na(SB))) {
-    SB <- rep(0, nrow(S))
+    SB <- rep(1, nrow(S))
   }
 
+  storage.mode(S) <- "integer"
+  
   ## Assemble components
-  ret <- list(V=V, VA=VA, VB=VB, S=S, SB=SB, H=H)
+  ret <- list(V=V, VA=VA, VB=as.integer(VB),
+              S=S, SB=as.integer(SB), H=H)
   class(ret) <- "pslg"
   return(ret)
 }
@@ -179,37 +178,44 @@ read.pslg <- function(file) {
 ##' Plot \code{\link{pslg}} object
 ##'
 ##' @title Plot \code{\link{pslg}} object
-##' @param pslg 
+##' @param p \code{\link{pslg}} object
 ##' @author David Sterratt
-plot.pslg <- function(pslg) {
-  with(pslg, {
+plot.pslg <- function(p) {
+  with(p, {
     plot(V)
     segments(V[S[,1],1], V[S[,1],2],
              V[S[,2],1], V[S[,2],2])
   })
 }
-
-##' Generate exact Delaunay triangulations, constrained Delaunay
-##' triangulations, and high-quality triangular meshes using the
-##' Triangle library
-##' (\url{http://www.cs.cmu.edu/~quake/triangle.html})
+##' Plots a triangulation object produced with \code{\link{trianglate}}
 ##'
-##' Triangulate a planar straight line graph comprising points
-##' \code{P} and, optionally, segments \code{S}. The
+##' @title Plot a triangulation object produced with \code{\link{triangulate}} 
+##' @param t Triangulation object produced with \code{\link{triangulate}}.
+##' @author David Sterratt
+plot.triangulation <- function(t) {
+  with(t, {
+    plot(rbind(V))
+    segments(V[E[,1],1], V[E[,1],2],
+             V[E[,2],1], V[E[,2],2])
+    segments(V[S[,1],1], V[S[,1],2],
+             V[S[,2],1], V[S[,2],2], col="red")
+  })
+}
+
+##' Triangulate a planar straight line graph using the Triangle
+##' library (\url{http://www.cs.cmu.edu/~quake/triangle.html}).  The
 ##' triangulation is a constrained conforming Delaunay triangulation
 ##' in which additional vertices, called Steiner points, can be
 ##' inserted into segments to improved the quality of the
 ##' triangulation.  To prevent the insertion of Steiner points on
-##' boundary segments, specify \code{Y=1}. If the maximum triangle area
-##' \code{a} is specified, the area of each triangle is not allowed to
-##' exceed this value. If the the minimum angle \code{q} is
+##' boundary segments, specify \code{Y=1}. If the maximum triangle
+##' area \code{a} is specified, the area of each triangle is not
+##' allowed to exceed this value. If the the minimum angle \code{q} is
 ##' specified, no triangle angle is allowed to be below this value.
+##'
 ##' @title Triangulate a Planar Straight Line Graph
-##' @param P Matrix of x-y co-ordinates of vertices, arranged either
-##' in rows or columns.
-##' @param S Matrix of segments, arranged either in rows or
-##' columns. Each segment refers to the indices in \code{P} of the
-##' endpoints of the segment.
+##' @param p Planar straight line graph object; see
+##' \code{\link{pslg}}.
 ##' @param a Maximum triangle area. If specified, triangles cannot be
 ##' larger than this area.
 ##' @param q Minimum triangle angle in degrees.
@@ -221,23 +227,24 @@ plot.pslg <- function(pslg) {
 ##' information about what the Triangle library is doing.
 ##' @param Q If \code{TRUE} suppresses all explanation of what the
 ##' Triangle library is doing, unless an error occurs. 
-##' @return
-##' \item{P}{Set of vertices in the triangulation.}
-##' \item{PB}{Boundary markers of vertices. For each vertex this is 1
-##' if the point is on a boundary of the triangulation and zero
-##' otherwise.}
+##' @return A object with class \code{triangulation}. This contains
+##' the information in the input PSLG, \code{p}, an also contains:
+##' \describe{
 ##' \item{T}{Triangulation specified as 3 column matrix
 ##' in which each row contains indices in \code{P} of vertices.}
-##' \item{S}{Set of segments (enforced edges) in the triangulation.}
-##' \item{SB}{Boundary markers of segments. For each segment this is 1
-##' if the point is on a boundary of the triangulation and 0
-##' otherwise.}
 ##' \item{E}{Set of edges in the triangulation.}
 ##' \item{EB}{Boundary markers of edges. For each edge this is 1 if
 ##' the point is on a boundary of the triangulation and 0
-##' otherwise.}
+##' otherwise.}}
+##' @examples
+##' ## Plot PSLG
+##' data("A", package="Triangle")
+##' plot(A)
+##' ## Triangulate
+##' TA <- triangulate(A)
+##' plot(TA)
 ##' @author David Sterratt
-triangulate <- function(P, S=NULL, a=NULL, q=NULL, Y=FALSE, j=FALSE,
+triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                         V=0, Q=FALSE) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
@@ -252,45 +259,24 @@ triangulate <- function(P, S=NULL, a=NULL, q=NULL, Y=FALSE, j=FALSE,
     }
   }
   
-  check.na.nan(P)
-  check.na.nan(S)
   check.na.nan(a)
   check.na.nan(q)
   check.na.nan(V)
-
-  ## Deal with P
-  if (ncol(P) == 2) {
-    P <- t(P)
-  }
-  ## Check that there are no duplicate rows in P
-  if (anyDuplicated(t(P))) {
-    stop("Duplicated points in P.")
-  }
-  PB <- rep(1, ncol(P))
-
-  ## Deal with S
-  if (is.null(S)) {
-    S <- rbind(1:ncol(P), c(2:ncol(P),1))
-  } else {
-    if (ncol(S) == 2) {
-      S <- t(S)
-    }
-  }
-  SB <- rep(1, ncol(S))
   
   ## Call the main routine
   out <- .Call("R_triangulate",
-               P,
-               as.integer(PB),
-               as.integer(S),
-               as.integer(SB),
+               t(p$V),
+               p$VB,
+               t(p$S),
+               p$SB,
                a,
                q,
                Y,
                j,
                as.integer(V),
                Q)
-  names(out) <- c("P", "PB", "T", "S", "SB", "E", "EB")
+  names(out) <- c("V", "VB", "T", "S", "SB", "E", "EB")
+  class(out) <- "triangulation"
   return(out)
 }
 
