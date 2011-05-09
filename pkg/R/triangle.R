@@ -6,6 +6,11 @@
 ##' @title Create a Planar Straight Line Graph object
 ##' @param V A 2-column matrix of x-y co-ordinates of vertices. There
 ##' is one row per vertex.
+##' @param VA Matrix of \emph{attributes} which are typically
+##' floating-point values of physical quantities (such as mass or
+##' conductivity) associated with the nodes of a finite element
+##' mesh. When triangulating using \code{\link{triangulate}} these are
+##' copied unchanged to the output mesh.
 ##' @param VB Vector of \emph{boundary markers} of vertices. For each
 ##' vertex this is 1 if the point should be on a boundary of any mesh
 ##' generated from the PSLG and 0 otherwise. There should be as many
@@ -33,7 +38,7 @@
 ##' contains the information supplied in the inputs. This function
 ##' does some sanity checking of its inputs.
 ##' @author David Sterratt
-pslg <- function(V, VB=NA, S=NA, SB=NA, H=NA) {
+pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
   check.na.nan <- function(x) {
@@ -50,39 +55,45 @@ pslg <- function(V, VB=NA, S=NA, SB=NA, H=NA) {
   check.na.nan(V)
 
   ## Deal with V
-  if (ncol(V) == 2) {
-    V <- t(V)
+  if (ncol(V) != 2) {
+    stop("Matrix of verticies V should have 2 columns")
   }
 
   ## Check that there are no duplicate rows in V
-  if (anyDuplicated(t(V))) {
+  if (anyDuplicated(V)) {
     stop("Duplicated vertices in V.")
   }
 
+  ## If attributes not specified, set them to zero
+  if (any(is.na(VA))) {
+    VA <- rep(0, nrow(V))
+  }
+  
   ## If boudary vertices not specified, set them to zero
   if (is.na(VB)) {
-    VB <- rep(0, ncol(V))
+    VB <- rep(0, nrow(V))
   }
 
   ## Deal with S
-  if (is.na(S)) {
-    S <- rbind(1:ncol(V), c(2:ncol(V),1))
+  if (any(is.na(S))) {
+    S <- cbind(1:nrow(V), c(2:nrow(V),1))
   } else {
-    if (ncol(S) == 2) {
-      S <- t(S)
+    if (ncol(S) != 2) {
+    stop("Matrix of segments S should have 2 columns")
     }
   }
 
   ## If boundary vertices not specified, set them to zero
-  if (is.na(SB)) {
-    SB <- rep(0, ncol(S))
+  if (any(is.na(SB))) {
+    SB <- rep(0, nrow(S))
   }
 
   ## Assemble components
-  ret <- list(V=V, VB=VB, S=S, SB=SB, H=H)
+  ret <- list(V=V, VA=VA, VB=VB, S=S, SB=SB, H=H)
   class(ret) <- "pslg"
   return(ret)
 }
+
 ##' Read a Planar Straight Line Graph from a \code{.poly} file, as
 ##' used in Schwchuk's Triangle library
 ##' (\url{http://www.cs.cmu.edu/~quake/triangle.poly.html}).
@@ -92,7 +103,7 @@ pslg <- function(V, VB=NA, S=NA, SB=NA, H=NA) {
 ##' @return \code{pslg} object. See \code{\link{pslg}}.
 ##' @author David Sterratt
 read.pslg <- function(file) {
-  ##    * First line: <# of vertices> <dimension (must be 2)> <# of attributes> <# of boundary markers (0 or 1)>
+  ##   * First line: <# of vertices> <dimension (must be 2)> <# of attributes> <# of boundary markers (0 or 1)>
   ##   * Following lines: <vertex #> <x> <y> [attributes] [boundary marker]
   ##   * One line: <# of segments> <# of boundary markers (0 or 1)>
   ##   * Following lines: <segment #> <endpoint> <endpoint> [boundary marker]
@@ -101,45 +112,64 @@ read.pslg <- function(file) {
   ##   * Optional line: <# of regional attributes and/or area constraints>
   ##   * Optional following lines: <region #> <x> <y> <attribute> <maximum area>
 
-  dat <- scan(file)
+  dat <- scan(file, quiet=TRUE)
+
+  ## Read in numbers of vertices, attributes and boundary points
   N.vert <- dat[1]
   N.dims <- dat[2]
   N.attr <- dat[3]
   N.boun <- dat[4]
 
+  ## Read in vertices, attributes and vertex boundaries
   offset <- 4
   line.length <- 3 + N.attr + N.boun
 
-  V <- matrix(NA, 2, N.vert)
-  VB <- matrix(NA, N.boun, N.vert)
-  for (i in (1:N.vert)) {
-    V[,i] <- dat[offset+((i-1)*line.length)+(2:3)]
-    VB[,i] <- dat[offset+((i-1)*line.length)+3+(1:N.boun)]
+  V <- matrix(NA, N.vert, 2)
+  if (N.attr >= 1) {
+    VA <- matrix(NA, N.vert, N.attr)
+  }
+  if (N.boun >= 1) {
+    VB <- matrix(NA, N.vert, N.boun)
+  } else {
+    VB <- NA
   }
 
-  offset <- offset + line.length*N.vert
+  for (i in (1:N.vert)) {
+    V[i,] <- dat[offset+((i-1)*line.length)+(2:3)]
+    if (N.attr >= 1) {
+      VA[i,] <- dat[offset+((i-1)*line.length)+3+(1:N.attr)]
+    }
+    if (N.boun >= 1) {
+      VB[i,] <- dat[offset+((i-1)*line.length)+3+N.attra+(1:N.boun)]
+    }
+  }
 
+  ## Read in numbers of segments
+  offset <- offset + line.length*N.vert
   N.seg <- dat[offset+1]
   N.boun <- dat[offset+2]
+
+  ## Read in segments
+  offset <- offset + 2
   line.length <- 3 + N.boun
 
-  offset <- offset + 2
-  S <- matrix(NA, 2, N.seg)
+  S <- matrix(NA, N.seg, 2)
   for (i in (1:N.seg)) {
-    S[,i] <- dat[offset+((i-1)*line.length)+(2:3)]
+    S[i,] <- dat[offset+((i-1)*line.length)+(2:3)]
   }
 
+  ## Read in number of holes
   offset <- offset + line.length*N.seg
-
   N.hole <- dat[offset+1]
 
+  ## Read in holes
   offset <- offset + 1
-  H <- matrix(NA, 2, N.hole)
+  H <- matrix(NA, N.hole, 2)
   for (i in (1:N.hole)) {
-    H[,i] <- dat[offset+((i-1)*2)+(2:3)]
+    H[i,] <- dat[offset+((i-1)*2)+(2:3)]
   }
-  print(VB)
-  return(pslg(V=V, VB=VB, S=S, H=H))
+
+  return(pslg(V=V, VA=VA, VB=VB, S=S, H=H))
 }
 
 ##' Plot \code{\link{pslg}} object
@@ -149,9 +179,9 @@ read.pslg <- function(file) {
 ##' @author David Sterratt
 plot.pslg <- function(pslg) {
   with(pslg, {
-    plot(t(V))
-    segments(V[1,S[1,]], V[2,S[1,]],
-             V[1,S[2,]], V[2,S[2,]])
+    plot(V)
+    segments(V[S[,1],1], V[S[,1],2],
+             V[S[,2],1], V[S[,2],2])
   })
 }
 
