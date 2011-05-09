@@ -240,12 +240,20 @@ plot.triangulation <- function(t) {
 ##' ## Plot PSLG
 ##' data("A", package="Triangle")
 ##' plot(A)
-##' ## Triangulate
+##' ## Triangulate the PSLG
 ##' TA <- triangulate(A)
+##' plot(TA)
+##' ## Triangulate the PSLG with triangles in which no angle
+##' ## is smaller than 20 degrees
+##' TA <- triangulate(A, q=20)
+##' plot(TA)
+##' ## Triangulate the PSLG with triangles in which no triangle has 
+##' ## area greater than 0.001
+##' TA <- triangulate(A, a=0.001)
 ##' plot(TA)
 ##' @author David Sterratt
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
-                        V=0, Q=FALSE) {
+                        V=0, Q=TRUE) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
   check.na.nan <- function(x) {
