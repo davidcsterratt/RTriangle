@@ -15,7 +15,8 @@ install: package
 	R CMD INSTALL --latex $(PACKAGE) 
 
 doc: package
-	R CMD Rd2dvi --pdf pkg
+	rm -f Triangle.pdf
+	R CMD Rd2dvi --pdf --output=Triangle.pdf pkg 
 
 check:
 	R CMD check $(PACKAGE)
