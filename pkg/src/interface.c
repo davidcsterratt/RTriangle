@@ -135,7 +135,7 @@ int reportnorms;
 /*                                                                           */
 /*****************************************************************************/
 
-SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y, SEXP j, SEXP V, SEXP Q)
+SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP j, SEXP V, SEXP Q)
 {
   /* Output variables */
   SEXP oP, oPB, oT, oS, oSB, oE, oEB;
@@ -162,7 +162,8 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP a, SEXP q, SEXP Y, SE
   in.numberofsegments = LENGTH(S)/2;
   in.segmentlist = INTEGER(S);
   in.segmentmarkerlist = INTEGER(SB);
-  in.numberofholes = 0;
+  in.numberofholes = LENGTH(H)/2;
+  in.holelist = REAL(H);
   in.numberofregions = 0;
 
   if (isInteger(V)) {
