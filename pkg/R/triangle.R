@@ -254,7 +254,7 @@ plot.triangulation <- function(x, ...) {
 ##' the point is on a boundary of the triangulation and 0
 ##' otherwise.}}
 ##' @examples
-##' ## Create an object with a concavaty
+##' ## Create an object with a concavity
 ##' P <- pslg(V=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
 ##'           S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 5), c(5, 1)))
 ##' ## Plot it
@@ -262,7 +262,7 @@ plot.triangulation <- function(x, ...) {
 ##' ## Triangulate it
 ##' TP <- triangulate(P)
 ##' plot(TP)
-##' ## Triangulate it subject to minimum area contraint
+##' ## Triangulate it subject to minimum area constraint
 ##' TP <- triangulate(P, a=0.01)
 ##' plot(TP)
 ##' ## Load a data set containing a hole
