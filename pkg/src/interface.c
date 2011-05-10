@@ -206,6 +206,12 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   char flags[200];
   strcpy(flags, "pevn");
   char opts[200];
+  /* If the segment list is empty, enclose the convex hull with */
+  /* so that the triangulation is not eaten up. See documentation in */
+  /*   triangle.c (-c folag) for more information */
+  if (LENGTH(S)==0) {  
+    strcat(flags, "c");
+  }
   if (isReal(a)) {
     sprintf(opts, "a%f", *REAL(a));
     strcat(flags, opts);
