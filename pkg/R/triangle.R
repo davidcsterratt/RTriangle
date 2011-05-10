@@ -143,7 +143,7 @@ read.pslg <- function(file) {
       VA[i,] <- dat[offset+((i-1)*line.length)+3+(1:N.attr)]
     }
     if (N.boun >= 1) {
-      VB[i,] <- dat[offset+((i-1)*line.length)+3+N.attra+(1:N.boun)]
+      VB[i,] <- dat[offset+((i-1)*line.length)+3+N.attr+(1:N.boun)]
     }
   }
 
@@ -177,28 +177,33 @@ read.pslg <- function(file) {
 
 ##' Plot \code{\link{pslg}} object
 ##'
-##' @title Plot \code{\link{pslg}} object
-##' @param p \code{\link{pslg}} object
+##' @title Plot pslg object
+##' @method plot pslg
+##' @param x \code{\link{pslg}} object
+##' @param ... Arguments to be passed to methods.
 ##' @author David Sterratt
-plot.pslg <- function(p) {
-  with(p, {
-    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n")
+plot.pslg <- function(x, ...) {
+  with(x, {
+    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
     segments(V[S[,1],1], V[S[,1],2],
-             V[S[,2],1], V[S[,2],2])
+             V[S[,2],1], V[S[,2],2], ...)
   })
 }
-##' Plots a triangulation object produced with \code{\link{trianglate}}
+
+##' Plots a triangulation object produced with \code{\link{triangulate}}
 ##'
-##' @title Plot a triangulation object produced with \code{\link{triangulate}} 
-##' @param t Triangulation object produced with \code{\link{triangulate}}.
+##' @title Plot a triangulation object produced with triangulate
+##' @method plot triangulation
+##' @param x Triangulation object produced with \code{\link{triangulate}}.
+##' @param ... Arguments to be passed to methods.
 ##' @author David Sterratt
-plot.triangulation <- function(t) {
-  with(t, {
-    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n")
+plot.triangulation <- function(x, ...) {
+  with(x, {
+    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
     segments(V[E[,1],1], V[E[,1],2],
-             V[E[,2],1], V[E[,2],2])
+             V[E[,2],1], V[E[,2],2], ...)
     segments(V[S[,1],1], V[S[,1],2],
-             V[S[,2],1], V[S[,2],2], col="red")
+             V[S[,2],1], V[S[,2],2], col="red", ...)
   })
 }
 
