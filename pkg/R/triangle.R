@@ -15,11 +15,16 @@
 ##' conductivity) associated with the nodes of a finite element
 ##' mesh. When triangulating using \code{\link{triangulate}} these are
 ##' copied unchanged to the output mesh.
-##' @param S A 2-column matrix of \emph{segments}. Segments are edges
-##' whose endpoints are vertices in the PSLG, and whose presence in
-##' any mesh generated from the PSLG is enforced. Each segment refers
-##' to the indices in \code{V} of the endpoints of the segment.  There
-##' is one row per segment.
+##' @param S A 2-column matrix of \emph{segments} in which each row is
+##' a \emph{segment}. Segments are edges whose endpoints are vertices
+##' in the PSLG, and whose presence in any mesh generated from the
+##' PSLG is enforced. Each segment refers to the indices in \code{V}
+##' of the endpoints of the segment. By default the segments are not
+##' specified (\code{NA}), in which case the convex hull of the
+##' vertices are taken to be the segments. Any vertices outside the
+##' region enclosed by the segments are eaten away by the
+##' triangulation algorithm. If the segments do not enclose a region
+##' the whole triangulation may be eaten away. 
 ##' @param SB Vector of boundary markers of segments. For each segment
 ##' this is 1 if the segment should be on a boundary of any mesh
 ##' generated from the PSLG and 0 otherwise. There should be as many
@@ -56,7 +61,7 @@ pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
 
   ## Deal with V
   if (ncol(V) != 2) {
-    stop("Matrix of verticies V should have 2 columns")
+    stop("Matrix of vertices V should have 2 columns")
   }
 
   ## Check that there are no duplicate rows in V
@@ -69,25 +74,27 @@ pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
     VA <- rep(0, nrow(V))
   }
   
-  ## If boudary vertices not specified, set them to 1
+  ## If boundary vertices not specified, set them to 0
   if (is.na(VB)) {
-    VB <- rep(1, nrow(V))
+    VB <- 0
   }
-
+  VB <- rep(VB, length.out=nrow(V))
+  
   ## Deal with S
   if (any(is.na(S))) {
-    S <- cbind(1:nrow(V), c(2:nrow(V),1))
+    S <- matrix(0, 0, 2)
   } else {
     if (ncol(S) != 2) {
     stop("Matrix of segments S should have 2 columns")
     }
   }
 
-  ## If boundary segments not specified, set them to 1
+  ## If boundary segments not specified, set them to 0
   if (any(is.na(SB))) {
-    SB <- rep(1, nrow(S))
+    SB <- 0
   }
-
+  SB <- rep(SB, length.out=nrow(S))
+  
   ## If hole not specified, set it to empty matrix
   if (any(is.na(H))) {
     H <- matrix(0, 0, 2)
@@ -103,7 +110,7 @@ pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
 }
 
 ##' Read a Planar Straight Line Graph from a \code{.poly} file, as
-##' used in Schwchuk's Triangle library
+##' used in Shewchuk's Triangle library
 ##' (\url{http://www.cs.cmu.edu/~quake/triangle.poly.html}).
 ##'
 ##' @title Read a Planar Straight Line Graph from file
@@ -300,4 +307,5 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
   return(out)
 }
 
-# LocalWords:  param Sterratt
+# LocalWords:  param Sterratt PSLG emph pslg NAs NaNs NaN anyDuplicated nrow
+# LocalWords:  ret Shewchuk's dat vert attr boun seg xlab ylab xaxt yaxt bty
