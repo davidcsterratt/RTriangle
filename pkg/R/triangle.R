@@ -6,15 +6,15 @@
 ##' @title Create a Planar Straight Line Graph object
 ##' @param V A 2-column matrix of x-y co-ordinates of vertices. There
 ##' is one row per vertex.
+##' @param VB Vector of \emph{boundary markers} of vertices. For each
+##' vertex this is 1 if the point should be on a boundary of any mesh
+##' generated from the PSLG and 0 otherwise. There should be as many
+##' elements in \code{VB} as there are vertices in \code{V}.
 ##' @param VA Matrix of \emph{attributes} which are typically
 ##' floating-point values of physical quantities (such as mass or
 ##' conductivity) associated with the nodes of a finite element
 ##' mesh. When triangulating using \code{\link{triangulate}} these are
 ##' copied unchanged to the output mesh.
-##' @param VB Vector of \emph{boundary markers} of vertices. For each
-##' vertex this is 1 if the point should be on a boundary of any mesh
-##' generated from the PSLG and 0 otherwise. There should be as many
-##' elements in \code{VB} as there are vertices in \code{V}.
 ##' @param S A 2-column matrix of \emph{segments}. Segments are edges
 ##' whose endpoints are vertices in the PSLG, and whose presence in
 ##' any mesh generated from the PSLG is enforced. Each segment refers
@@ -38,7 +38,7 @@
 ##' contains the information supplied in the inputs. This function
 ##' does some sanity checking of its inputs.
 ##' @author David Sterratt
-pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
+pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
   check.na.nan <- function(x) {
