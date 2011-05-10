@@ -88,9 +88,14 @@ pslg <- function(V, VA=NA, VB=NA, S=NA, SB=NA, H=NA) {
     SB <- rep(1, nrow(S))
   }
 
-  storage.mode(S) <- "integer"
+  ## If hole not specified, set it to empty matrix
+  if (any(is.na(H))) {
+    H <- matrix(0, 0, 2)
+  }
   
-  ## Assemble components
+  ## Assemble components, setting storage mode of segments and markers
+  ## to integer for the benefit of triangulate()
+  storage.mode(S) <- "integer"
   ret <- list(V=V, VA=VA, VB=as.integer(VB),
               S=S, SB=as.integer(SB), H=H)
   class(ret) <- "pslg"
