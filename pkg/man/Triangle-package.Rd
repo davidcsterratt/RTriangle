@@ -1,0 +1,48 @@
+\name{Triangle-package}
+\title{Generate 2D Quality meshes and constrained Delaunay triangulations}
+\description{Generate 2D Quality meshes and constrained Delaunay triangulations}
+\details{This package is a wrapper of  Jonathan Richard Shewchuk's Triangle
+package.  \code{\link{triangulate}} triangulates a \emph{Planar
+Straight Line Graph} (PSLG), is a collection of vertices and
+segments.}
+\alias{Triangle}
+\docType{package}
+\author{David C. Sterratt \email{david.c.sterratt@ed.ac.uk}}
+\references{\itemize{
+\item \url{http://www.cs.cmu.edu/~quake/triangle.html}
+\item Jonathan Richard Shewchuk, \emph{Triangle: Engineering a 2D Quality Mesh
+Generator and Delaunay Triangulator}, in ``Applied Computational
+Geometry: Towards Geometric Engineering'' (Ming C. Lin and Dinesh
+Manocha, editors), volume 1148 of Lecture Notes in Computer
+Science, pages 203-222, Springer-Verlag, Berlin, May 1996. (From
+the First ACM Workshop on Applied Computational Geometry.) 
+\item Jonathan Richard Shewchuk, \emph{Delaunay Refinement Algorithms for
+Triangular Mesh Generation}, Computational Geometry: Theory and
+Applications 22(1-3):21-74, May 2002.}}
+\keyword{package}
+\seealso{\code{\link{triangulate}}}
+\examples{## Create an object with a concavity
+P <- pslg(V=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
+S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 5), c(5, 1)))
+## Plot it
+plot(P)
+## Triangulate it
+TP <- triangulate(P)
+plot(TP)
+## Triangulate it subject to minimum area contraint
+TP <- triangulate(P, a=0.01)
+plot(TP)
+## Load a data set containing a hole
+data("A", package="Triangle")
+plot(A)
+## Triangulate the PSLG
+TA <- triangulate(A)
+plot(TA)
+## Triangulate the PSLG with triangles in which no angle
+## is smaller than 20 degrees
+TA <- triangulate(A, q=20)
+plot(TA)
+## Triangulate the PSLG with triangles in which no triangle has 
+## area greater than 0.001
+TA <- triangulate(A, a=0.001)
+plot(TA)}
