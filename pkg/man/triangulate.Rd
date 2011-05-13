@@ -43,7 +43,7 @@ plot(P)
 ## Triangulate it
 TP <- triangulate(P)
 plot(TP)
-## Triangulate it subject to minimum area contraint
+## Triangulate it subject to minimum area constraint
 TP <- triangulate(P, a=0.01)
 plot(TP)
 ## Load a data set containing a hole
