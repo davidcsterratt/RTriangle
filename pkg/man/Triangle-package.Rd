@@ -3,8 +3,10 @@
 \description{Generate 2D Quality meshes and constrained Delaunay triangulations}
 \details{This package is a wrapper of  Jonathan Richard Shewchuk's Triangle
 package.  \code{\link{triangulate}} triangulates a \emph{Planar
-Straight Line Graph} (PSLG), is a collection of vertices and
-segments.}
+Straight Line Graph} (PSLG),  a collection of vertices and
+segments created with \code{\link{pslg}}.   A mesh in  the  can be
+created within an arbitrary closed outline and the maximum area
+and minimum angle of the triangles  in the mesh can be specified.}
 \alias{Triangle}
 \docType{package}
 \author{David C. Sterratt \email{david.c.sterratt@ed.ac.uk}}
@@ -29,7 +31,7 @@ plot(P)
 ## Triangulate it
 TP <- triangulate(P)
 plot(TP)
-## Triangulate it subject to minimum area contraint
+## Triangulate it subject to minimum area constraint
 TP <- triangulate(P, a=0.01)
 plot(TP)
 ## Load a data set containing a hole
