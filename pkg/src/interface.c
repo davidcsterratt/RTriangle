@@ -135,7 +135,7 @@ int reportnorms;
 /*                                                                           */
 /*****************************************************************************/
 
-SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP j, SEXP V, SEXP Q)
+SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP j, SEXP D, SEXP V, SEXP Q)
 {
   /* Output variables */
   SEXP oP, oPB, oT, oS, oSB, oE, oEB;
@@ -228,6 +228,11 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   if (isLogical(j)) {
     if (*LOGICAL(j) == TRUE) {
       strcat(flags, "j");
+    }
+  }
+  if (isLogical(D)) {
+    if (*LOGICAL(D) == TRUE) {
+      strcat(flags, "D");
     }
   }
   if (isInteger(V)) {
