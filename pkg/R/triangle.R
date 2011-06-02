@@ -238,8 +238,14 @@ plot.triangulation <- function(x, ...) {
 ##' @param q Minimum triangle angle in degrees.
 ##' @param Y If \code{TRUE} prohibits the insertion of Steiner points
 ##' on the mesh boundary.
-##' @param j If \code{TRUE} Jettisons vertices that are not part of
+##' @param j If \code{TRUE} jettisons vertices that are not part of
 ##' the final triangulation from the output.
+##' @param D If \code{TRUE} produce a conforming Delaunay
+##' triangulation. This ensures that all the triangles in the mesh are
+##' truly Delaunay, and not merely constrained Delaunay.  This option
+##' invokes Ruppert's original algorithm, which splits every
+##' subsegment whose diametral circle is encroached.  It usually
+##' increases the number of vertices and triangles.
 ##' @param V Verbosity level. Specify higher values  for more detailed
 ##' information about what the Triangle library is doing.
 ##' @param Q If \code{TRUE} suppresses all explanation of what the
@@ -268,8 +274,11 @@ plot.triangulation <- function(x, ...) {
 ##' ## Load a data set containing a hole
 ##' data("A", package="Triangle")
 ##' plot(A)
-##' ## Triangulate the PSLG
-##' TA <- triangulate(A)
+##' ## Produce a constrained Delaunay triangulation of the PSLG
+##' TA <- triangulate(A, Y=TRUE)
+##' plot(TA)
+##' ## Produce a conforming Delaunay triangulation of the PSLG
+##' TA <- triangulate(A, D=TRUE)
 ##' plot(TA)
 ##' ## Triangulate the PSLG with triangles in which no angle
 ##' ## is smaller than 20 degrees
@@ -281,6 +290,7 @@ plot.triangulation <- function(x, ...) {
 ##' plot(TA)
 ##' @author David Sterratt
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
+                        D=FALSE,
                         V=0, Q=TRUE) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
@@ -310,6 +320,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                q,
                Y,
                j,
+               D,
                as.integer(V),
                Q,
                PACKAGE="Triangle")
