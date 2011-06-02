@@ -61,9 +61,6 @@ plot(TA)
 ## Produce a conforming Delaunay triangulation of the PSLG
 TA <- triangulate(A, D=TRUE)
 plot(TA)
-## Produce a constrained conforming Delaunay triangulation of the PSLG
-TA <- triangulate(A)
-plot(TA)
 ## Triangulate the PSLG with triangles in which no angle
 ## is smaller than 20 degrees
 TA <- triangulate(A, q=20)
