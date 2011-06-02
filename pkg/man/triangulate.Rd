@@ -1,7 +1,7 @@
 \name{triangulate}
 \alias{triangulate}
 \title{Triangulate a Planar Straight Line Graph}
-\usage{triangulate(p, a, q, Y=FALSE, j=FALSE, V=0, Q=TRUE)}
+\usage{triangulate(p, a, q, Y=FALSE, j=FALSE, D=FALSE, V=0, Q=TRUE)}
 \description{Triangulate a planar straight line graph using the Triangle
 library (\url{http://www.cs.cmu.edu/~quake/triangle.html}).  The
 triangulation is a constrained conforming Delaunay triangulation
@@ -29,8 +29,14 @@ larger than this area.}
 \item{q}{Minimum triangle angle in degrees.}
 \item{Y}{If \code{TRUE} prohibits the insertion of Steiner points
 on the mesh boundary.}
-\item{j}{If \code{TRUE} Jettisons vertices that are not part of
+\item{j}{If \code{TRUE} jettisons vertices that are not part of
 the final triangulation from the output.}
+\item{D}{If \code{TRUE} produce a conforming Delaunay
+triangulation. This ensures that all the triangles in the mesh are
+truly Delaunay, and not merely constrained Delaunay.  This option
+invokes Ruppert's original algorithm, which splits every
+subsegment whose diametral circle is encroached.  It usually
+increases the number of vertices and triangles.}
 \item{V}{Verbosity level. Specify higher values  for more detailed
 information about what the Triangle library is doing.}
 \item{Q}{If \code{TRUE} suppresses all explanation of what the
@@ -49,7 +55,13 @@ plot(TP)
 ## Load a data set containing a hole
 data("A", package="Triangle")
 plot(A)
-## Triangulate the PSLG
+## Produce a constrained Delaunay triangulation of the PSLG
+TA <- triangulate(A, Y=TRUE)
+plot(TA)
+## Produce a conforming Delaunay triangulation of the PSLG
+TA <- triangulate(A, D=TRUE)
+plot(TA)
+## Produce a constrained conforming Delaunay triangulation of the PSLG
 TA <- triangulate(A)
 plot(TA)
 ## Triangulate the PSLG with triangles in which no angle
