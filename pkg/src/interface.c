@@ -135,13 +135,13 @@ int reportnorms;
 /*                                                                           */
 /*****************************************************************************/
 
-SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP j, SEXP D, SEXP V, SEXP Q)
+SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP SS, SEXP j, SEXP D, SEXP V, SEXP Q)
 {
   /* Output variables */
-  SEXP oP, oPB, oT, oS, oSB, oE, oEB;
+  SEXP oP, oPB, oT, oS, oSB, oE, oEB, oPV, oEV, oNV;
   SEXP ans;
-  double *xP, *xoP;
-  int *xoT, *xoPB, *xoS, *xoSB, *xoE, *xoEB;
+  double *xP, *xoP, *xoPV, *xoNV;
+  int *xoT, *xoPB, *xoS, *xoSB, *xoE, *xoEB, *xoEV;
   
   /* Convert input point matrix into array */
   PROTECT(P = AS_NUMERIC(P));
@@ -225,6 +225,12 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
       strcat(flags, "Y");
     }
   }
+  if (isInteger(SS)) {
+    if (*INTEGER(SS) >= 0) {
+      sprintf(opts, "S%i", *INTEGER(SS));
+      strcat(flags, opts);
+    }
+  }
   if (isLogical(j)) {
     if (*LOGICAL(j) == TRUE) {
       strcat(flags, "j");
@@ -287,14 +293,17 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   /* report(&out, 0, 1, 0, 0, 0, 0); */
 
   /* Make space for answers */
-  PROTECT(oP  = allocMatrix(REALSXP, mid.numberofpoints, 2));
-  PROTECT(oPB = allocMatrix(INTSXP,  mid.numberofpoints, 1));
-  PROTECT(oT  = allocMatrix(INTSXP,  mid.numberoftriangles, 3));
-  PROTECT(oS  = allocMatrix(INTSXP,  mid.numberofsegments, 2));
-  PROTECT(oSB = allocMatrix(INTSXP,  mid.numberofsegments, 1));
-  PROTECT(oE  = allocMatrix(INTSXP,  mid.numberofedges, 2));
-  PROTECT(oEB = allocMatrix(INTSXP,  mid.numberofedges, 1));
-  
+  PROTECT(oP  = allocMatrix(REALSXP,  mid.numberofpoints, 2));
+  PROTECT(oPB = allocMatrix(INTSXP,   mid.numberofpoints, 1));
+  PROTECT(oT  = allocMatrix(INTSXP,   mid.numberoftriangles, 3));
+  PROTECT(oS  = allocMatrix(INTSXP,   mid.numberofsegments, 2));
+  PROTECT(oSB = allocMatrix(INTSXP,   mid.numberofsegments, 1));
+  PROTECT(oE  = allocMatrix(INTSXP,   mid.numberofedges, 2));
+  PROTECT(oEB = allocMatrix(INTSXP,   mid.numberofedges, 1));
+  PROTECT(oPV  = allocMatrix(REALSXP, vorout.numberofpoints, 2));
+  PROTECT(oEV  = allocMatrix(INTSXP,  vorout.numberofedges, 2));
+  PROTECT(oNV  = allocMatrix(REALSXP, vorout.numberofpoints, 2));
+
   xoP = REAL(oP);
   for (int i = 0; i < mid.numberofpoints; i++) {
     for (int j = 0; j < 2; j++) {
@@ -338,8 +347,28 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
     xoEB[i] = mid.edgemarkerlist[i];
   }
 
+  xoPV = REAL(oPV);
+  for (int i = 0; i < vorout.numberofpoints; i++) {
+    for (int j = 0; j < 2; j++) {
+      xoPV[j * vorout.numberofpoints + i] = vorout.pointlist[i * 2 + j];
+    }
+  }
+
+  xoEV = INTEGER(oEV);
+  for (int i = 0; i < vorout.numberofedges; i++) {
+    for (int j = 0; j < 2; j++) {
+      xoEV[j * vorout.numberofedges + i] = vorout.edgelist[i * 2 + j];
+    }
+  }
+
+  xoNV = REAL(oNV);
+  for (int i = 0; i < vorout.numberofpoints; i++) {
+    for (int j = 0; j < 2; j++) {
+      xoNV[j * vorout.numberofpoints + i] = vorout.normlist[i * 2 + j];
+    }
+  }
   
-  PROTECT(ans = allocVector(VECSXP, 7));
+  PROTECT(ans = allocVector(VECSXP, 10));
   SET_VECTOR_ELT(ans, 0, oP);
   SET_VECTOR_ELT(ans, 1, oPB);
   SET_VECTOR_ELT(ans, 2, oT);
@@ -347,9 +376,10 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   SET_VECTOR_ELT(ans, 4, oSB);
   SET_VECTOR_ELT(ans, 5, oE);
   SET_VECTOR_ELT(ans, 6, oEB);
-
-
-  UNPROTECT(9);
+  SET_VECTOR_ELT(ans, 7, oPV);
+  SET_VECTOR_ELT(ans, 8, oEV);
+  SET_VECTOR_ELT(ans, 9, oNV);
+  UNPROTECT(12);
 
   /* Free all allocated arrays, including those allocated by Triangle. */
   free(mid.pointlist);

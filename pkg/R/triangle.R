@@ -4,13 +4,13 @@
 ##' is enforced.
 ##'
 ##' @title Create a Planar Straight Line Graph object
-##' @param V A 2-column matrix of x-y co-ordinates of vertices. There
+##' @param P A 2-column matrix of x-y co-ordinates of vertices. There
 ##' is one row per vertex.
-##' @param VB Vector of \emph{boundary markers} of vertices. For each
+##' @param PB Vector of \emph{boundary markers} of vertices. For each
 ##' vertex this is 1 if the point should be on a boundary of any mesh
 ##' generated from the PSLG and 0 otherwise. There should be as many
 ##' elements in \code{VB} as there are vertices in \code{V}.
-##' @param VA Matrix of \emph{attributes} which are typically
+##' @param PA Matrix of \emph{attributes} which are typically
 ##' floating-point values of physical quantities (such as mass or
 ##' conductivity) associated with the nodes of a finite element
 ##' mesh. When triangulating using \code{\link{triangulate}} these are
@@ -43,7 +43,7 @@
 ##' contains the information supplied in the inputs. This function
 ##' does some sanity checking of its inputs.
 ##' @author David Sterratt
-pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
+pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
   check.na.nan <- function(x) {
@@ -57,28 +57,28 @@ pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
     }
   }
   
-  check.na.nan(V)
+  check.na.nan(P)
 
-  ## Deal with V
-  if (ncol(V) != 2) {
-    stop("Matrix of vertices V should have 2 columns")
+  ## Deal with P
+  if (ncol(P) != 2) {
+    stop("Matrix of vertices P should have 2 columns")
   }
 
-  ## Check that there are no duplicate rows in V
-  if (anyDuplicated(V)) {
-    stop("Duplicated vertices in V.")
+  ## Check that there are no duplicate rows in P
+  if (anyDuplicated(P)) {
+    stop("Duplicated vertices in P.")
   }
 
   ## If attributes not specified, set them to zero
-  if (any(is.na(VA))) {
-    VA <- rep(0, nrow(V))
+  if (any(is.na(PA))) {
+    PA <- rep(0, nrow(P))
   }
   
   ## If boundary vertices not specified, set them to 0
-  if (is.na(VB)) {
-    VB <- 0
+  if (is.na(PB)) {
+    PB <- 0
   }
-  VB <- rep(VB, length.out=nrow(V))
+  PB <- rep(PB, length.out=nrow(P))
   
   ## Deal with S
   if (any(is.na(S))) {
@@ -103,7 +103,7 @@ pslg <- function(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA) {
   ## Assemble components, setting storage mode of segments and markers
   ## to integer for the benefit of triangulate()
   storage.mode(S) <- "integer"
-  ret <- list(V=V, VA=VA, VB=as.integer(VB),
+  ret <- list(P=P, PA=PA, PB=as.integer(PB),
               S=S, SB=as.integer(SB), H=H)
   class(ret) <- "pslg"
   return(ret)
@@ -139,23 +139,23 @@ read.pslg <- function(file) {
   offset <- 4
   line.length <- 3 + N.attr + N.boun
 
-  V <- matrix(NA, N.vert, 2)
+  P <- matrix(NA, N.vert, 2)
   if (N.attr >= 1) {
-    VA <- matrix(NA, N.vert, N.attr)
+    PA <- matrix(NA, N.vert, N.attr)
   }
   if (N.boun >= 1) {
-    VB <- matrix(NA, N.vert, N.boun)
+    PB <- matrix(NA, N.vert, N.boun)
   } else {
-    VB <- NA
+    PB <- NA
   }
 
   for (i in (1:N.vert)) {
-    V[i,] <- dat[offset+((i-1)*line.length)+(2:3)]
+    P[i,] <- dat[offset+((i-1)*line.length)+(2:3)]
     if (N.attr >= 1) {
-      VA[i,] <- dat[offset+((i-1)*line.length)+3+(1:N.attr)]
+      PA[i,] <- dat[offset+((i-1)*line.length)+3+(1:N.attr)]
     }
     if (N.boun >= 1) {
-      VB[i,] <- dat[offset+((i-1)*line.length)+3+N.attr+(1:N.boun)]
+      PB[i,] <- dat[offset+((i-1)*line.length)+3+N.attr+(1:N.boun)]
     }
   }
 
@@ -184,7 +184,7 @@ read.pslg <- function(file) {
     H[i,] <- dat[offset+((i-1)*2)+(2:3)]
   }
 
-  return(pslg(V=V, VA=VA, VB=VB, S=S, H=H))
+  return(pslg(P=P, PA=PA, PB=PB, S=S, H=H))
 }
 
 ##' Plot \code{\link{pslg}} object
@@ -196,9 +196,9 @@ read.pslg <- function(file) {
 ##' @author David Sterratt
 plot.pslg <- function(x, ...) {
   with(x, {
-    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
-    segments(V[S[,1],1], V[S[,1],2],
-             V[S[,2],1], V[S[,2],2], ...)
+    plot(P, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
+    segments(P[S[,1],1], P[S[,1],2],
+             P[S[,2],1], P[S[,2],2], ...)
   })
 }
 
@@ -211,11 +211,11 @@ plot.pslg <- function(x, ...) {
 ##' @author David Sterratt
 plot.triangulation <- function(x, ...) {
   with(x, {
-    plot(V, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
-    segments(V[E[,1],1], V[E[,1],2],
-             V[E[,2],1], V[E[,2],2], ...)
-    segments(V[S[,1],1], V[S[,1],2],
-             V[S[,2],1], V[S[,2],2], col="red", ...)
+    plot(P, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
+    segments(P[E[,1],1], P[E[,1],2],
+             P[E[,2],1], P[E[,2],2], ...)
+    segments(P[S[,1],1], P[S[,1],2],
+             P[S[,2],1], P[S[,2],2], col="red", ...)
   })
 }
 
@@ -246,51 +246,57 @@ plot.triangulation <- function(x, ...) {
 ##' invokes Ruppert's original algorithm, which splits every
 ##' subsegment whose diametral circle is encroached.  It usually
 ##' increases the number of vertices and triangles.
+##' @param S Specifies the maximum number of added Steiner points.
 ##' @param V Verbosity level. Specify higher values  for more detailed
 ##' information about what the Triangle library is doing.
 ##' @param Q If \code{TRUE} suppresses all explanation of what the
 ##' Triangle library is doing, unless an error occurs. 
 ##' @return A object with class \code{triangulation}. This contains
-##' the information in the input PSLG, \code{p}, an also contains:
-##' \describe{
-##' \item{T}{Triangulation specified as 3 column matrix
+##' the information in the same format as the  PSLG, \code{p}, with
+##' an updated list of points \code{P}, along with the following
+##' variables:
+##' 
+##' \item{\code{T}}{Triangulation specified as 3 column matrix
 ##' in which each row contains indices in \code{P} of vertices.}
-##' \item{E}{Set of edges in the triangulation.}
-##' \item{EB}{Boundary markers of edges. For each edge this is 1 if
+##' \item{\code{E}}{Set of edges in the triangulation.}
+##' \item{\code{EB}}{Boundary markers of edges. For each edge this is 1 if
 ##' the point is on a boundary of the triangulation and 0
-##' otherwise.}}
+##' otherwise.}
+##' \item{\code{PV}}{The points of the Voronoi tessalation as a 2-column matrix}
+##' \item{\code{EV}}{Set of edges of the Voronoi tessalation. An index of -1 indicates an infinite ray.}
+##' \item{\code{NV}}{Directions of infinite rays as a 2-column matrix with the same number of rows as \code{PV}.}
 ##' @examples
 ##' ## Create an object with a concavity
-##' P <- pslg(V=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
+##' p <- pslg(P=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
 ##'           S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 5), c(5, 1)))
 ##' ## Plot it
-##' plot(P)
+##' plot(p)
 ##' ## Triangulate it
-##' TP <- triangulate(P)
-##' plot(TP)
+##' tp <- triangulate(p)
+##' plot(tp)
 ##' ## Triangulate it subject to minimum area constraint
-##' TP <- triangulate(P, a=0.01)
-##' plot(TP)
+##' tp <- triangulate(p, a=0.01)
+##' plot(tp)
 ##' ## Load a data set containing a hole
 ##' data("A", package="Triangle")
 ##' plot(A)
 ##' ## Produce a constrained Delaunay triangulation of the PSLG
-##' TA <- triangulate(A, Y=TRUE)
-##' plot(TA)
+##' tA <- triangulate(A, Y=TRUE)
+##' plot(tA)
 ##' ## Produce a conforming Delaunay triangulation of the PSLG
-##' TA <- triangulate(A, D=TRUE)
-##' plot(TA)
+##' tA <- triangulate(A, D=TRUE)
+##' plot(tA)
 ##' ## Triangulate the PSLG with triangles in which no angle
 ##' ## is smaller than 20 degrees
-##' TA <- triangulate(A, q=20)
-##' plot(TA)
+##' tA <- triangulate(A, q=20)
+##' plot(tA)
 ##' ## Triangulate the PSLG with triangles in which no triangle has 
 ##' ## area greater than 0.001
-##' TA <- triangulate(A, a=0.001)
-##' plot(TA)
+##' tA <- triangulate(A, a=0.001)
+##' plot(tA)
 ##' @author David Sterratt
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
-                        D=FALSE,
+                        D=FALSE, S=Inf,
                         V=0, Q=TRUE) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
@@ -308,23 +314,30 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
   check.na.nan(a)
   check.na.nan(q)
   check.na.nan(V)
+  check.na.nan(S)
+  if (is.infinite(S) | S < 0) {
+    SS <- -1
+  } else {
+    SS <- S
+  }
   
   ## Call the main routine
   out <- .Call("R_triangulate",
-               t(p$V),
-               p$VB,
+               t(p$P),
+               p$PB,
                t(p$S),
                p$SB,
                p$H,
                a,
                q,
                Y,
+               as.integer(SS),
                j,
                D,
                as.integer(V),
                Q,
                PACKAGE="Triangle")
-  names(out) <- c("V", "VB", "T", "S", "SB", "E", "EB")
+  names(out) <- c("P", "PB", "T", "S", "SB", "E", "EB", "PV", "EV", "NV")
   class(out) <- "triangulation"
   return(out)
 }
