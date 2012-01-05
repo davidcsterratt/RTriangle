@@ -1,7 +1,7 @@
 \name{pslg}
 \alias{pslg}
 \title{Create a Planar Straight Line Graph object}
-\usage{pslg(V, VB=NA, VA=NA, S=NA, SB=NA, H=NA)}
+\usage{pslg(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA)}
 \description{A Planar Straight Line Graph (PSLG) is a collection of vertices
 and segments. Segments are edges whose endpoints are vertices in
 the PSLG, and whose presence in any mesh generated from the PSLG
@@ -10,13 +10,13 @@ is enforced.}
 contains the information supplied in the inputs. This function
 does some sanity checking of its inputs.}
 \author{David Sterratt}
-\arguments{\item{V}{A 2-column matrix of x-y co-ordinates of vertices. There
+\arguments{\item{P}{A 2-column matrix of x-y co-ordinates of vertices. There
 is one row per vertex.}
-\item{VB}{Vector of \emph{boundary markers} of vertices. For each
+\item{PB}{Vector of \emph{boundary markers} of vertices. For each
 vertex this is 1 if the point should be on a boundary of any mesh
 generated from the PSLG and 0 otherwise. There should be as many
 elements in \code{VB} as there are vertices in \code{V}.}
-\item{VA}{Matrix of \emph{attributes} which are typically
+\item{PA}{Matrix of \emph{attributes} which are typically
 floating-point values of physical quantities (such as mass or
 conductivity) associated with the nodes of a finite element
 mesh. When triangulating using \code{\link{triangulate}} these are

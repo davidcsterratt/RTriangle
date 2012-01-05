@@ -1,7 +1,7 @@
 \name{triangulate}
 \alias{triangulate}
 \title{Triangulate a Planar Straight Line Graph}
-\usage{triangulate(p, a, q, Y=FALSE, j=FALSE, D=FALSE, V=0, Q=TRUE)}
+\usage{triangulate(p, a, q, Y=FALSE, j=FALSE, D=FALSE, S=Inf, V=0, Q=TRUE)}
 \description{Triangulate a planar straight line graph using the Triangle
 library (\url{http://www.cs.cmu.edu/~quake/triangle.html}).  The
 triangulation is a constrained conforming Delaunay triangulation
@@ -13,14 +13,19 @@ area \code{a} is specified, the area of each triangle is not
 allowed to exceed this value. If the the minimum angle \code{q} is
 specified, no triangle angle is allowed to be below this value.}
 \value{A object with class \code{triangulation}. This contains
-the information in the input PSLG, \code{p}, an also contains:
-\describe{
-\item{T}{Triangulation specified as 3 column matrix
+the information in the same format as the  PSLG, \code{p}, with
+an updated list of points \code{P}, along with the following
+variables:
+
+\item{\code{T}}{Triangulation specified as 3 column matrix
 in which each row contains indices in \code{P} of vertices.}
-\item{E}{Set of edges in the triangulation.}
-\item{EB}{Boundary markers of edges. For each edge this is 1 if
+\item{\code{E}}{Set of edges in the triangulation.}
+\item{\code{EB}}{Boundary markers of edges. For each edge this is 1 if
 the point is on a boundary of the triangulation and 0
-otherwise.}}}
+otherwise.}
+\item{\code{PV}}{The points of the Voronoi tessalation as a 2-column matrix}
+\item{\code{EV}}{Set of edges of the Voronoi tessalation. An index of -1 indicates an infinite ray.}
+\item{\code{NV}}{Directions of infinite rays as a 2-column matrix with the same number of rows as \code{PV}.}}
 \author{David Sterratt}
 \arguments{\item{p}{Planar straight line graph object; see
 \code{\link{pslg}}.}
@@ -37,35 +42,36 @@ truly Delaunay, and not merely constrained Delaunay.  This option
 invokes Ruppert's original algorithm, which splits every
 subsegment whose diametral circle is encroached.  It usually
 increases the number of vertices and triangles.}
+\item{S}{Specifies the maximum number of added Steiner points.}
 \item{V}{Verbosity level. Specify higher values  for more detailed
 information about what the Triangle library is doing.}
 \item{Q}{If \code{TRUE} suppresses all explanation of what the
 Triangle library is doing, unless an error occurs.}}
 \examples{## Create an object with a concavity
-P <- pslg(V=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
+p <- pslg(P=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
 S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 5), c(5, 1)))
 ## Plot it
-plot(P)
+plot(p)
 ## Triangulate it
-TP <- triangulate(P)
-plot(TP)
+tp <- triangulate(p)
+plot(tp)
 ## Triangulate it subject to minimum area constraint
-TP <- triangulate(P, a=0.01)
-plot(TP)
+tp <- triangulate(p, a=0.01)
+plot(tp)
 ## Load a data set containing a hole
 data("A", package="Triangle")
 plot(A)
 ## Produce a constrained Delaunay triangulation of the PSLG
-TA <- triangulate(A, Y=TRUE)
-plot(TA)
+tA <- triangulate(A, Y=TRUE)
+plot(tA)
 ## Produce a conforming Delaunay triangulation of the PSLG
-TA <- triangulate(A, D=TRUE)
-plot(TA)
+tA <- triangulate(A, D=TRUE)
+plot(tA)
 ## Triangulate the PSLG with triangles in which no angle
 ## is smaller than 20 degrees
-TA <- triangulate(A, q=20)
-plot(TA)
+tA <- triangulate(A, q=20)
+plot(tA)
 ## Triangulate the PSLG with triangles in which no triangle has 
 ## area greater than 0.001
-TA <- triangulate(A, a=0.001)
-plot(TA)}
+tA <- triangulate(A, a=0.001)
+plot(tA)}

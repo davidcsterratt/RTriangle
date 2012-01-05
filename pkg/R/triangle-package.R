@@ -27,32 +27,32 @@
 ##' @seealso \code{\link{triangulate}}
 ##' @examples
 ##' ## Create an object with a concavity
-##' P <- pslg(V=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
+##' p <- pslg(P=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
 ##'           S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 5), c(5, 1)))
 ##' ## Plot it
-##' plot(P)
+##' plot(p)
 ##' ## Triangulate it
-##' TP <- triangulate(P)
-##' plot(TP)
+##' tp <- triangulate(p)
+##' plot(tp)
 ##' ## Triangulate it subject to minimum area constraint
-##' TP <- triangulate(P, a=0.01)
-##' plot(TP)
+##' tp <- triangulate(p, a=0.01)
+##' plot(tp)
 ##' ## Load a data set containing a hole
 ##' data("A", package="Triangle")
 ##' plot(A)
 ##' ## Triangulate the PSLG
-##' TA <- triangulate(A)
-##' plot(TA)
+##' tA <- triangulate(A)
+##' plot(tA)
 ##' ## Triangulate the PSLG with triangles in which no angle
 ##' ## is smaller than 20 degrees
-##' TA <- triangulate(A, q=20)
-##' plot(TA)
+##' tA <- triangulate(A, q=20)
+##' plot(tA)
 ##' ## Triangulate the PSLG with triangles in which no triangle has 
 ##' ## area greater than 0.001
-##' TA <- triangulate(A, a=0.001)
-##' plot(TA)
+##' tA <- triangulate(A, a=0.001)
+##' plot(tA)
 c()
 
 
 # LocalWords:  Shewchuk's emph PSLG pslg docType Sterratt itemize Shewchuk ACM
-# LocalWords:  Triangulator Dinesh Manocha Verlag seealso rbind TP 
+# LocalWords:  Triangulator Dinesh Manocha Verlag seealso rbind  
