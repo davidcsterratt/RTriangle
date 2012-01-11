@@ -44,6 +44,14 @@
 ##' does some sanity checking of its inputs.
 ##' @author David Sterratt
 pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
+  ## Make sure input is sane
+  P <- as.matrix(P)
+  PB <- as.vector(PB)
+  PA <- as.matrix(PA)
+  S <- as.matrix(S)
+  SB <- as.vector(SB)
+  H <- as.matrix(H)
+  
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
   check.na.nan <- function(x) {
