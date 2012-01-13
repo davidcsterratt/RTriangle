@@ -46,12 +46,12 @@
 ##' @export
 pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   ## Make sure input is sane
-  P <- as.matrix(P)
-  PB <- as.vector(PB)
+  P  <- as.matrix(P)
+  PB <- as.integer(PB)
   PA <- as.matrix(PA)
-  S <- as.matrix(S)
-  SB <- as.vector(SB)
-  H <- as.matrix(H)
+  S  <- as.matrix(S)
+  SB <- as.integer(SB)
+  H  <- as.matrix(H)
   
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
@@ -78,9 +78,13 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
     stop("Duplicated vertices in P.")
   }
 
-  ## If attributes not specified, set them to zero
+  ## If attributes not specified, set them to a matrix with zero columns
   if (any(is.na(PA))) {
-    PA <- rep(0, nrow(P))
+    PA <- matrix(0, nrow(P), 0)
+  }
+  ## Make sure the size of the point attribute matrix is correct
+  if (nrow(PA) != nrow(P)) {
+    stop("Point attribute matrix PA does not have same number of rows the point matrix P")
   }
   
   ## If boundary vertices not specified, set them to 0
@@ -111,9 +115,15 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   
   ## Assemble components, setting storage mode of segments and markers
   ## to integer for the benefit of triangulate()
-  storage.mode(S) <- "integer"
-  ret <- list(P=P, PA=PA, PB=as.integer(PB),
-              S=S, SB=as.integer(SB), H=H)
+  storage.mode(P)  <- "double"
+  storage.mode(PA) <- "double"
+  storage.mode(PB) <- "integer"
+  storage.mode(S)  <- "integer"
+  storage.mode(SB) <- "integer"
+  storage.mode(H)  <- "double"
+
+  ret <- list(P=P, PA=PA, PB=PB,
+              S=S, SB=SB, H=H)
   class(ret) <- "pslg"
   return(ret)
 }
@@ -339,6 +349,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
   out <- .Call("R_triangulate",
                t(p$P),
                p$PB,
+               p$PA,
                t(p$S),
                p$SB,
                p$H,
@@ -351,7 +362,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                as.integer(V),
                Q,
                PACKAGE="Triangle")
-  names(out) <- c("P", "PB", "T", "S", "SB", "E", "EB", "PV", "EV", "NV")
+  names(out) <- c("P", "PB", "PA", "T", "S", "SB", "E", "EB", "PV", "EV", "NV")
   class(out) <- "triangulation"
   return(out)
 }

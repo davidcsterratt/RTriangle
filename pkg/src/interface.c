@@ -135,12 +135,12 @@ int reportnorms;
 /*                                                                           */
 /*****************************************************************************/
 
-SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP SS, SEXP j, SEXP D, SEXP V, SEXP Q)
+SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP SS, SEXP j, SEXP D, SEXP V, SEXP Q)
 {
   /* Output variables */
-  SEXP oP, oPB, oT, oS, oSB, oE, oEB, oPV, oEV, oNV;
+  SEXP oP, oPB, oPA, oT, oS, oSB, oE, oEB, oPV, oEV, oNV;
   SEXP ans;
-  double *xP, *xoP, *xoPV, *xoNV;
+  double *xP, *xoP, *xoPA, *xoPV, *xoNV;
   int *xoT, *xoPB, *xoS, *xoSB, *xoE, *xoEB, *xoEV;
   
   /* Convert input point matrix into array */
@@ -153,12 +153,13 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   struct triangulateio in, mid, vorout;
 
   in.numberofpoints = LENGTH(P)/2;
-  in.numberofpointattributes = 0; 
-  // in.pointlist = (TRIREAL *) malloc(in.numberofpoints * 2 * sizeof(TRIREAL));
   in.pointlist = REAL(P);
+
   in.pointmarkerlist = INTEGER(PB);
-  
-  
+
+  in.numberofpointattributes = Rf_ncols(PA);   
+  in.pointattributelist = REAL(PA);
+
   in.numberofsegments = LENGTH(S)/2;
   in.segmentlist = INTEGER(S);
   in.segmentmarkerlist = INTEGER(SB);
@@ -295,6 +296,7 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   /* Make space for answers */
   PROTECT(oP  = allocMatrix(REALSXP,  mid.numberofpoints, 2));
   PROTECT(oPB = allocMatrix(INTSXP,   mid.numberofpoints, 1));
+  PROTECT(oPA = allocMatrix(REALSXP,  mid.numberofpoints, mid.numberofpointattributes));
   PROTECT(oT  = allocMatrix(INTSXP,   mid.numberoftriangles, 3));
   PROTECT(oS  = allocMatrix(INTSXP,   mid.numberofsegments, 2));
   PROTECT(oSB = allocMatrix(INTSXP,   mid.numberofsegments, 1));
@@ -315,7 +317,14 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
   for (int i = 0; i < mid.numberofpoints; i++) {
     xoPB[i] = mid.pointmarkerlist[i];
   }
-  
+
+  xoPA = REAL(oPA);
+  for (int i = 0; i < mid.numberofpoints; i++) {
+    for (int j = 0; j < mid.numberofpointattributes; j++) {
+      xoPA[j * mid.numberofpoints + i] = mid.pointattributelist[i * mid.numberofpointattributes + j];
+    }
+  }
+
   xoT = INTEGER(oT);
   for (int i = 0; i < mid.numberoftriangles; i++) {
     for (int j = 0; j < mid.numberofcorners; j++) {
@@ -368,18 +377,19 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, S
     }
   }
   
-  PROTECT(ans = allocVector(VECSXP, 10));
+  PROTECT(ans = allocVector(VECSXP, 11));
   SET_VECTOR_ELT(ans, 0, oP);
   SET_VECTOR_ELT(ans, 1, oPB);
-  SET_VECTOR_ELT(ans, 2, oT);
-  SET_VECTOR_ELT(ans, 3, oS);
-  SET_VECTOR_ELT(ans, 4, oSB);
-  SET_VECTOR_ELT(ans, 5, oE);
-  SET_VECTOR_ELT(ans, 6, oEB);
-  SET_VECTOR_ELT(ans, 7, oPV);
-  SET_VECTOR_ELT(ans, 8, oEV);
-  SET_VECTOR_ELT(ans, 9, oNV);
-  UNPROTECT(12);
+  SET_VECTOR_ELT(ans, 2, oPA);
+  SET_VECTOR_ELT(ans, 3, oT);
+  SET_VECTOR_ELT(ans, 4, oS);
+  SET_VECTOR_ELT(ans, 5, oSB);
+  SET_VECTOR_ELT(ans, 6, oE);
+  SET_VECTOR_ELT(ans, 7, oEB);
+  SET_VECTOR_ELT(ans, 8, oPV);
+  SET_VECTOR_ELT(ans, 9, oEV);
+  SET_VECTOR_ELT(ans, 10, oNV);
+  UNPROTECT(13);
 
   /* Free all allocated arrays, including those allocated by Triangle. */
   free(mid.pointlist);
