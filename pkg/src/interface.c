@@ -138,9 +138,9 @@ int reportnorms;
 SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, SEXP q, SEXP Y, SEXP SS, SEXP j, SEXP D, SEXP V, SEXP Q)
 {
   /* Output variables */
-  SEXP oP, oPB, oPA, oT, oS, oSB, oE, oEB, oPV, oEV, oNV;
+  SEXP oP, oPB, oPA, oT, oS, oSB, oE, oEB, oPV, oEV, oNV, oAV;
   SEXP ans;
-  double *xP, *xoP, *xoPA, *xoPV, *xoNV;
+  double *xP, *xoP, *xoPA, *xoPV, *xoNV, *xoAV;
   int *xoT, *xoPB, *xoS, *xoSB, *xoE, *xoEB, *xoEV;
   
   /* Convert input point matrix into array */
@@ -305,6 +305,7 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   PROTECT(oPV  = allocMatrix(REALSXP, vorout.numberofpoints, 2));
   PROTECT(oEV  = allocMatrix(INTSXP,  vorout.numberofedges, 2));
   PROTECT(oNV  = allocMatrix(REALSXP, vorout.numberofpoints, 2));
+  PROTECT(oAV  = allocMatrix(REALSXP, vorout.numberofpoints, mid.numberofpointattributes));
 
   xoP = REAL(oP);
   for (int i = 0; i < mid.numberofpoints; i++) {
@@ -376,8 +377,15 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
       xoNV[j * vorout.numberofpoints + i] = vorout.normlist[i * 2 + j];
     }
   }
+
+  xoAV = REAL(oAV);
+  for (int i = 0; i < vorout.numberofpoints; i++) {
+    for (int j = 0; j < mid.numberofpointattributes; j++) {
+      xoAV[j * vorout.numberofpoints + i] = vorout.pointattributelist[i * mid.numberofpointattributes + j];
+    }
+  }
   
-  PROTECT(ans = allocVector(VECSXP, 11));
+  PROTECT(ans = allocVector(VECSXP, 12));
   SET_VECTOR_ELT(ans, 0, oP);
   SET_VECTOR_ELT(ans, 1, oPB);
   SET_VECTOR_ELT(ans, 2, oPA);
@@ -389,7 +397,8 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   SET_VECTOR_ELT(ans, 8, oPV);
   SET_VECTOR_ELT(ans, 9, oEV);
   SET_VECTOR_ELT(ans, 10, oNV);
-  UNPROTECT(13);
+  SET_VECTOR_ELT(ans, 11, oAV);
+  UNPROTECT(14);
 
   /* Free all allocated arrays, including those allocated by Triangle. */
   free(mid.pointlist);
