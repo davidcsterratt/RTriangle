@@ -19,7 +19,9 @@
   mass or conductivity) associated with the nodes of a
   finite element mesh. When triangulating using
   \code{\link{triangulate}} these are copied unchanged to
-  the output mesh.}
+  existing points in the output mesh and each new Steiner
+  point added to the mesh will have quantities assigned to
+  it by linear interpolation.}
 
   \item{S}{A 2-column matrix of \emph{segments} in which
   each row is a \emph{segment}. Segments are edges whose

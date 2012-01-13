@@ -42,8 +42,8 @@
 \value{
   A object with class \code{triangulation}. This contains
   the information in the same format as the PSLG, \code{p},
-  with an updated list of points \code{P}, along with the
-  following variables:
+  with an updated list of points \code{P} and point
+  attributes \code{PA}, along with the following variables:
 
   \item{\code{T}}{Triangulation specified as 3 column
   matrix in which each row contains indices in \code{P} of
@@ -51,12 +51,14 @@
   triangulation.} \item{\code{EB}}{Boundary markers of
   edges. For each edge this is 1 if the point is on a
   boundary of the triangulation and 0 otherwise.}
-  \item{\code{PV}}{The points of the Voronoi tessalation as
-  a 2-column matrix} \item{\code{EV}}{Set of edges of the
+  \item{\code{VP}}{The points of the Voronoi tessalation as
+  a 2-column matrix} \item{\code{VE}}{Set of edges of the
   Voronoi tessalation. An index of -1 indicates an infinite
-  ray.} \item{\code{NV}}{Directions of infinite rays as a
-  2-column matrix with the same number of rows as
-  \code{PV}.}
+  ray.} \item{\code{VN}}{Directions of infinite rays of
+  Voroni tessalation as a 2-column matrix with the same
+  number of rows as \code{VP}.} \item{\code{VA}}{Matrix of
+  \emph{attributes} associated with the polygons of the
+  Voronoi tessalation.}
 }
 \description{
   Triangulate a planar straight line graph using the

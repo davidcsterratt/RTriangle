@@ -14,7 +14,9 @@
 ##' floating-point values of physical quantities (such as mass or
 ##' conductivity) associated with the nodes of a finite element
 ##' mesh. When triangulating using \code{\link{triangulate}} these are
-##' copied unchanged to the output mesh.
+##' copied unchanged to existing points in the output mesh and each
+##' new Steiner point added to the mesh will have quantities assigned
+##' to it by linear interpolation.
 ##' @param S A 2-column matrix of \emph{segments} in which each row is
 ##' a \emph{segment}. Segments are edges whose endpoints are vertices
 ##' in the PSLG, and whose presence in any mesh generated from the
@@ -274,9 +276,9 @@ plot.triangulation <- function(x, ...) {
 ##' @param Q If \code{TRUE} suppresses all explanation of what the
 ##' Triangle library is doing, unless an error occurs. 
 ##' @return A object with class \code{triangulation}. This contains
-##' the information in the same format as the  PSLG, \code{p}, with
-##' an updated list of points \code{P}, along with the following
-##' variables:
+##' the information in the same format as the  PSLG, \code{p}, with an
+##' updated list of points \code{P} and point attributes \code{PA},
+##' along with the following variables:
 ##' 
 ##' \item{\code{T}}{Triangulation specified as 3 column matrix
 ##' in which each row contains indices in \code{P} of vertices.}
@@ -284,9 +286,11 @@ plot.triangulation <- function(x, ...) {
 ##' \item{\code{EB}}{Boundary markers of edges. For each edge this is 1 if
 ##' the point is on a boundary of the triangulation and 0
 ##' otherwise.}
-##' \item{\code{PV}}{The points of the Voronoi tessalation as a 2-column matrix}
-##' \item{\code{EV}}{Set of edges of the Voronoi tessalation. An index of -1 indicates an infinite ray.}
-##' \item{\code{NV}}{Directions of infinite rays as a 2-column matrix with the same number of rows as \code{PV}.}
+##' \item{\code{VP}}{The points of the Voronoi tessalation as a 2-column matrix}
+##' \item{\code{VE}}{Set of edges of the Voronoi tessalation. An index of -1 indicates an infinite ray.}
+##' \item{\code{VN}}{Directions of infinite rays of Voroni tessalation as a 2-column matrix with the same number of rows as \code{VP}.}
+##' \item{\code{VA}}{Matrix of \emph{attributes} associated with the
+##' polygons of the Voronoi tessalation.}
 ##' @examples
 ##' ## Create an object with a concavity
 ##' p <- pslg(P=rbind(c(0, 0), c(0, 1), c(0.5, 0.5), c(1, 1), c(1, 0)),
@@ -362,7 +366,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                as.integer(V),
                Q,
                PACKAGE="Triangle")
-  names(out) <- c("P", "PB", "PA", "T", "S", "SB", "E", "EB", "PV", "EV", "NV", "AV")
+  names(out) <- c("P", "PB", "PA", "T", "S", "SB", "E", "EB", "VP", "VE", "VN", "VA")
   class(out) <- "triangulation"
   return(out)
 }
