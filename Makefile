@@ -5,7 +5,7 @@ PACKAGE=Triangle_$(TRIANGLE_VERSION).tar.gz
 
 roxygen:
 	rm -f pkg/man/*
-	echo "library(roxygen2) ; roxygenize(\"pkg\")" |	R --no-restore --slave	R
+	echo "library(roxygen2) ; roxygenize(\"pkg\")" |	R --no-restore --slave
 
 package: roxygen 
 	rm -f pkg/R/*~
