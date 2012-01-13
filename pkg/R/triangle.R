@@ -43,6 +43,7 @@
 ##' contains the information supplied in the inputs. This function
 ##' does some sanity checking of its inputs.
 ##' @author David Sterratt
+##' @export
 pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   ## Make sure input is sane
   P <- as.matrix(P)
@@ -125,6 +126,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
 ##' @param file File name of \code{.poly} file to read.
 ##' @return \code{pslg} object. See \code{\link{pslg}}.
 ##' @author David Sterratt
+##' @export
 read.pslg <- function(file) {
   ##   * First line: <# of vertices> <dimension (must be 2)> <# of attributes> <# of boundary markers (0 or 1)>
   ##   * Following lines: <vertex #> <x> <y> [attributes] [boundary marker]
@@ -202,6 +204,7 @@ read.pslg <- function(file) {
 ##' @param x \code{\link{pslg}} object
 ##' @param ... Arguments to be passed to methods.
 ##' @author David Sterratt
+##' @export
 plot.pslg <- function(x, ...) {
   with(x, {
     plot(P, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
@@ -217,6 +220,7 @@ plot.pslg <- function(x, ...) {
 ##' @param x Triangulation object produced with \code{\link{triangulate}}.
 ##' @param ... Arguments to be passed to methods.
 ##' @author David Sterratt
+##' @export
 plot.triangulation <- function(x, ...) {
   with(x, {
     plot(P, xlab="", ylab="", xaxt="n", yaxt="n", bty="n", ...)
@@ -303,6 +307,8 @@ plot.triangulation <- function(x, ...) {
 ##' tA <- triangulate(A, a=0.001)
 ##' plot(tA)
 ##' @author David Sterratt
+##' @export
+##' @useDynLib Triangle
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                         D=FALSE, S=Inf,
                         V=0, Q=TRUE) {
