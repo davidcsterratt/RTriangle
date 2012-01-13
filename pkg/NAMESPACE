@@ -1,0 +1,6 @@
+export(pslg)
+export(read.pslg)
+export(triangulate)
+S3method(plot,pslg)
+S3method(plot,triangulation)
+useDynLib(Triangle)
