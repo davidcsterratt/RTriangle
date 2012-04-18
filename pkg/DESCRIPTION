@@ -1,6 +1,6 @@
 Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard
     Shewchuk; 2011 David Sterratt
-Package: Triangle
+Package: RTriangle
 Maintainer: David C. Sterratt <david.c.sterratt@ed.ac.uk>
 License: MIT + file LICENSE
 Title: Triangle - A 2D Quality Mesh Generator and Delaunay Triangulator
