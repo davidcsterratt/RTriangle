@@ -7,8 +7,8 @@
 ##' created within an arbitrary closed outline and the maximum area
 ##' and minimum angle of the triangles  in the mesh can be specified.
 ##'
-##' @name Triangle-package
-##' @aliases Triangle
+##' @name RTriangle-package
+##' @aliases RTriangle
 ##' @docType package
 ##' @title Generate 2D Quality meshes and constrained Delaunay triangulations
 ##' @author David C. Sterratt \email{david.c.sterratt@@ed.ac.uk}
