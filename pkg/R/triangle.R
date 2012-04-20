@@ -322,7 +322,7 @@ plot.triangulation <- function(x, ...) {
 ##' plot(tA)
 ##' @author David Sterratt
 ##' @export
-##' @useDynLib Triangle
+##' @useDynLib RTriangle
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                         D=FALSE, S=Inf,
                         V=0, Q=TRUE) {
@@ -365,7 +365,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                D,
                as.integer(V),
                Q,
-               PACKAGE="Triangle")
+               PACKAGE="RTriangle")
   names(out) <- c("P", "PB", "PA", "T", "S", "SB", "E", "EB", "VP", "VE", "VN", "VA")
   class(out) <- "triangulation"
   return(out)
