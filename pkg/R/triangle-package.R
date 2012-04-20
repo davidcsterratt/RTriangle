@@ -38,7 +38,7 @@
 ##' tp <- triangulate(p, a=0.01)
 ##' plot(tp)
 ##' ## Load a data set containing a hole
-##' data("A", package="Triangle")
+##' data("A", package="RTriangle")
 ##' plot(A)
 ##' ## Triangulate the PSLG
 ##' tA <- triangulate(A)
