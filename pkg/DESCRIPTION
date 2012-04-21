@@ -20,4 +20,3 @@ Depends:
 Collate:
     'triangle-package.R'
     'triangle.R'
-    'zzz.R'
