@@ -11,23 +11,6 @@
 
 #include "triangle.h"
 
-#include <R.h>
-#include <Rdefines.h>
-#include <R_ext/Rdynload.h>
-#include <Rinternals.h>
-     
-void
-R_init_triangle(DllInfo *info)
-{
-  /* Register routines, allocate resources. */
-}
-     
-void
-R_unload_triangle(DllInfo *info)
-{
-  /* Release resources. */
-}
-
 /*****************************************************************************/
 /*                                                                           */
 /*  report()   Print the input or output.                                    */
