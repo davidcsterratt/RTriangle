@@ -38,7 +38,7 @@
 ##' tp <- triangulate(p, a=0.01)
 ##' plot(tp)
 ##' ## Load a data set containing a hole
-##' data("A", package="RTriangle")
+##' A <- read.pslg(file.path(system.file(package = "RTriangle"), "extdata", "A.poly"))
 ##' plot(A)
 ##' ## Triangulate the PSLG
 ##' tA <- triangulate(A)
@@ -52,7 +52,6 @@
 ##' tA <- triangulate(A, a=0.001)
 ##' plot(tA)
 c()
-
 
 # LocalWords:  Shewchuk's emph PSLG pslg docType Sterratt itemize Shewchuk ACM
 # LocalWords:  Triangulator Dinesh Manocha Verlag seealso rbind  
