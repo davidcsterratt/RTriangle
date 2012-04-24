@@ -1415,7 +1415,11 @@ int status;
 #endif /* not ANSI_DECLARATORS */
 
 {
-  exit(status);
+  /* CHANGE TO SOURCE: The commented line below is the original. It
+   needs to be replaced to fix warnings about exit being called. --
+   David Sterratt 24/4/12. */
+  /* exit(status); */
+  error("Triangle exit, code $i", status);
 }
 
 #ifdef ANSI_DECLARATORS
