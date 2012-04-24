@@ -88,7 +88,7 @@ plot(tp)
 tp <- triangulate(p, a=0.01)
 plot(tp)
 ## Load a data set containing a hole
-data("A", package="RTriangle")
+A <- read.pslg(file.path(system.file(package = "RTriangle"), "extdata", "A.poly"))
 plot(A)
 ## Produce a constrained Delaunay triangulation of the PSLG
 tA <- triangulate(A, Y=TRUE)
