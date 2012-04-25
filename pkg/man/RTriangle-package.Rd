@@ -1,7 +1,7 @@
 \docType{package}
-\name{Triangle-package}
-\alias{Triangle}
-\alias{Triangle-package}
+\name{RTriangle-package}
+\alias{RTriangle}
+\alias{RTriangle-package}
 \title{Generate 2D Quality meshes and constrained Delaunay triangulations}
 \description{
   Generate 2D Quality meshes and constrained Delaunay
@@ -29,7 +29,7 @@ plot(tp)
 tp <- triangulate(p, a=0.01)
 plot(tp)
 ## Load a data set containing a hole
-data("A", package="Triangle")
+A <- read.pslg(file.path(system.file(package = "RTriangle"), "extdata", "A.poly"))
 plot(A)
 ## Triangulate the PSLG
 tA <- triangulate(A)
