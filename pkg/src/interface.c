@@ -389,7 +389,7 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   Free(mid.pointmarkerlist);
   Free(mid.trianglelist);
   Free(mid.triangleattributelist);
-  Free(mid.trianglearealist);
+  /* Free(mid.trianglearealist); */
   Free(mid.neighborlist);
   Free(mid.segmentlist);
   Free(mid.segmentmarkerlist);
