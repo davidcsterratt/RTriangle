@@ -1,8 +1,9 @@
-The R code in this package is released under the MIT License:
-http://www.opensource.org/licenses/mit-license.php
+All the files in this package apart from src/triangle.c and src
+triangle.h are released under the Artistic Licence v2.0:
+http://www.r-project.org/Licenses/Artistic-2.0
 
-The C-library wrapped by this package is released under the following
-conditions:
+The C-library wrapped by this package (comprising src/triangle.c and
+src/triangle.h) is released under the following conditions:
 
 Triangle
 A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator.
