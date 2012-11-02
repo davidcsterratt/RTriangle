@@ -1,9 +1,10 @@
-All the files in this package apart from src/triangle.c and src
-triangle.h are released under the Artistic Licence v2.0:
-http://www.r-project.org/Licenses/Artistic-2.0
+All the files in this package apart from src/triangle.c, src
+triangle.h and inst/extdata/A.poly are released under the Artistic
+Licence v2.0: http://www.r-project.org/Licenses/Artistic-2.0
 
 The C-library wrapped by this package (comprising src/triangle.c and
-src/triangle.h) is released under the following conditions:
+src/triangle.h) and the example data file (inst/extdata/A.poly) are
+released under the following conditions:
 
 Triangle
 A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator.
