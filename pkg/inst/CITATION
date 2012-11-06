@@ -1,0 +1,17 @@
+bibentry(bibtype= "InCollection",
+         title = "Triangle: Engineering a 2D quality mesh
+                  generator and Delaunay triangulator",
+         author = personList(as.person("Jonathan Richard Shewchuk")),
+         year = 1996,
+         month = "may",
+         booktitle = "Applied Computational Geometry: Towards Geometric
+                  Engineering",
+         editor = personList(as.person("Ming C. Lin"),
+                             as.person("Dinesh Manocha")),
+         series = "Lecture Notes in Computer Science",
+         volume = 1148,
+         publisher = "Springer-Verlag",
+         pages = "203-222",
+         note = "From the First ACM Workshop on Applied Computational
+                  Geometry")
+
