@@ -123,12 +123,11 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   /* Output variables */
   SEXP oP, oPB, oPA, oT, oS, oSB, oE, oEB, oPV, oEV, oNV, oAV;
   SEXP ans;
-  double *xP, *xoP, *xoPA, *xoPV, *xoNV, *xoAV;
+  double *xoP, *xoPA, *xoPV, *xoNV, *xoAV;
   int *xoT, *xoPB, *xoS, *xoSB, *xoE, *xoEB, *xoEV;
   
   /* Convert input point matrix into array */
   PROTECT(P = AS_NUMERIC(P));
-  xP = REAL(P);
   /* Convert input boundary markers into array */
   // PROTECT(B = AS_NUMERIC(B));
 
