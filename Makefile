@@ -24,3 +24,6 @@ check:
 revision:
 	@echo $(TRIANGLE_SVN_REVISION)
 	@echo $(TRIANGLE_SVN_REVISION1)
+
+changelog:
+	cd pkg &&	svn2cl -i -r HEAD:{2010-01-01}
