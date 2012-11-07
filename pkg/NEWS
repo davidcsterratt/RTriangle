@@ -1,7 +1,15 @@
-CHANGES IN VERSION 1.6-0.6  - Released ????/??/??
+CHANGES IN VERSION 1.6-0.6  - Released 2012-11-07
+
+BUG FIXES
+
+* Fix for Issue #2358: 	RTriangle_1.6-0.5.tar.gz does not pass 'R CMD check' on Windows	
+  (https://r-forge.r-project.org/tracker/index.php?func=detail&aid=2358&group_id=1077&atid=4271)
+  Thanks to Uwe Ligges for alerting me to this.
 
 NEW FEATURES
 
 * CITATION file added
 
 * NEWS file added
+
+* ChangeLog added
