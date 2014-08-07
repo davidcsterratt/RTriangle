@@ -2,7 +2,7 @@
 \alias{pslg}
 \title{Create a Planar Straight Line Graph object}
 \usage{
-  pslg(P, PB = NA, PA = NA, S = NA, SB = NA, H = NA)
+pslg(P, PB = NA, PA = NA, S = NA, SB = NA, H = NA)
 }
 \arguments{
   \item{P}{A 2-column matrix of x-y co-ordinates of
@@ -55,17 +55,17 @@
   one side of the segment arbitrarily.}
 }
 \value{
-  An object containing the input of type \code{pslg} that
-  contains the information supplied in the inputs. This
-  function does some sanity checking of its inputs.
+An object containing the input of type \code{pslg} that
+contains the information supplied in the inputs. This
+function does some sanity checking of its inputs.
 }
 \description{
-  A Planar Straight Line Graph (PSLG) is a collection of
-  vertices and segments. Segments are edges whose endpoints
-  are vertices in the PSLG, and whose presence in any mesh
-  generated from the PSLG is enforced.
+A Planar Straight Line Graph (PSLG) is a collection of
+vertices and segments. Segments are edges whose endpoints
+are vertices in the PSLG, and whose presence in any mesh
+generated from the PSLG is enforced.
 }
 \author{
-  David Sterratt
+David Sterratt
 }
 

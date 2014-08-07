@@ -2,8 +2,8 @@
 \alias{triangulate}
 \title{Triangulate a Planar Straight Line Graph}
 \usage{
-  triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE,
-    D = FALSE, S = Inf, V = 0, Q = TRUE)
+triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE, D = FALSE,
+  S = Inf, V = 0, Q = TRUE)
 }
 \arguments{
   \item{p}{Planar straight line graph object; see
@@ -40,40 +40,38 @@
   occurs.}
 }
 \value{
-  A object with class \code{triangulation}. This contains
-  the information in the same format as the PSLG, \code{p},
-  with an updated list of points \code{P} and point
-  attributes \code{PA}, along with the following variables:
+A object with class \code{triangulation}. This contains the
+information in the same format as the PSLG, \code{p}, with
+an updated list of points \code{P} and point attributes
+\code{PA}, along with the following variables:
 
-  \item{\code{T}}{Triangulation specified as 3 column
-  matrix in which each row contains indices in \code{P} of
-  vertices.} \item{\code{E}}{Set of edges in the
-  triangulation.} \item{\code{EB}}{Boundary markers of
-  edges. For each edge this is 1 if the point is on a
-  boundary of the triangulation and 0 otherwise.}
-  \item{\code{VP}}{The points of the Voronoi tessalation as
-  a 2-column matrix} \item{\code{VE}}{Set of edges of the
-  Voronoi tessalation. An index of -1 indicates an infinite
-  ray.} \item{\code{VN}}{Directions of infinite rays of
-  Voroni tessalation as a 2-column matrix with the same
-  number of rows as \code{VP}.} \item{\code{VA}}{Matrix of
-  \emph{attributes} associated with the polygons of the
-  Voronoi tessalation.}
+\item{\code{T}}{Triangulation specified as 3 column matrix
+in which each row contains indices in \code{P} of
+vertices.} \item{\code{E}}{Set of edges in the
+triangulation.} \item{\code{EB}}{Boundary markers of edges.
+For each edge this is 1 if the point is on a boundary of
+the triangulation and 0 otherwise.} \item{\code{VP}}{The
+points of the Voronoi tessalation as a 2-column matrix}
+\item{\code{VE}}{Set of edges of the Voronoi tessalation.
+An index of -1 indicates an infinite ray.}
+\item{\code{VN}}{Directions of infinite rays of Voroni
+tessalation as a 2-column matrix with the same number of
+rows as \code{VP}.} \item{\code{VA}}{Matrix of
+\emph{attributes} associated with the polygons of the
+Voronoi tessalation.}
 }
 \description{
-  Triangulate a planar straight line graph using the
-  Triangle library
-  (\url{http://www.cs.cmu.edu/~quake/triangle.html}).  The
-  triangulation is a constrained conforming Delaunay
-  triangulation in which additional vertices, called
-  Steiner points, can be inserted into segments to improved
-  the quality of the triangulation.  To prevent the
-  insertion of Steiner points on boundary segments, specify
-  \code{Y=1}. If the maximum triangle area \code{a} is
-  specified, the area of each triangle is not allowed to
-  exceed this value. If the the minimum angle \code{q} is
-  specified, no triangle angle is allowed to be below this
-  value.
+Triangulate a planar straight line graph using the Triangle
+library (\url{http://www.cs.cmu.edu/~quake/triangle.html}).
+The triangulation is a constrained conforming Delaunay
+triangulation in which additional vertices, called Steiner
+points, can be inserted into segments to improved the
+quality of the triangulation.  To prevent the insertion of
+Steiner points on boundary segments, specify \code{Y=1}. If
+the maximum triangle area \code{a} is specified, the area
+of each triangle is not allowed to exceed this value. If
+the the minimum angle \code{q} is specified, no triangle
+angle is allowed to be below this value.
 }
 \examples{
 ## Create an object with a concavity
@@ -106,6 +104,6 @@ tA <- triangulate(A, a=0.001)
 plot(tA)
 }
 \author{
-  David Sterratt
+David Sterratt
 }
 
