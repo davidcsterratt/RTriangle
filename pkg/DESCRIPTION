@@ -2,7 +2,7 @@ Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard
     Shewchuk; 2011 David Sterratt
 Package: RTriangle
 Maintainer: David C. Sterratt <david.c.sterratt@ed.ac.uk>
-License: file LICENSE
+License: CC BY-NC-SA 4.0 + file LICENSE
 Title: Triangle - A 2D Quality Mesh Generator and Delaunay Triangulator
 Author: Jonathan Shewchuk, David C. Sterratt <david.c.sterratt@ed.ac.uk>
 Description: This is a port of Jonathan Shewchuk's Triangle library to
@@ -14,9 +14,6 @@ Description: This is a port of Jonathan Shewchuk's Triangle library to
 Version: 1.6-0.6
 URL: http://triangle.R-Forge.R-project.org,
     http://www.cs.cmu.edu/~quake/triangle.html
-Date: 2012-11-02
+Date: 2014-08-06
 Depends:
-    R (>= 2.9.0)
-Collate:
-    'triangle.R'
-    'triangle-package.R'
+    R (>= 3.0.0)
