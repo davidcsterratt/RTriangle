@@ -18,8 +18,8 @@ doc: package
 	rm -f RTriangle.pdf
 	R CMD Rd2dvi --pdf --output=RTriangle.pdf pkg 
 
-check:
-	R CMD check $(PACKAGE)
+check: package
+	R CMD check $(PACKAGE) --as-cran
 
 revision:
 	@echo $(TRIANGLE_SVN_REVISION)
