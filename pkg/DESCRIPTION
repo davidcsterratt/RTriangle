@@ -1,8 +1,8 @@
 Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard
-    Shewchuk; 2011 David Sterratt
+    Shewchuk; 2011-2013 David Sterratt
 Package: RTriangle
 Maintainer: David C. Sterratt <david.c.sterratt@ed.ac.uk>
-License: CC BY-NC-SA 4.0 + file LICENSE
+License: CC BY-NC-SA 4.0
 Title: Triangle - A 2D Quality Mesh Generator and Delaunay Triangulator
 Author: Jonathan Shewchuk, David C. Sterratt <david.c.sterratt@ed.ac.uk>
 Description: This is a port of Jonathan Shewchuk's Triangle library to
