@@ -2,7 +2,7 @@
 \alias{plot.triangulation}
 \title{Plot a triangulation object produced with triangulate}
 \usage{
-  \method{plot}{triangulation} (x, ...)
+\method{plot}{triangulation}(x, ...)
 }
 \arguments{
   \item{x}{Triangulation object produced with
@@ -11,10 +11,10 @@
   \item{...}{Arguments to be passed to methods.}
 }
 \description{
-  Plots a triangulation object produced with
-  \code{\link{triangulate}}
+Plots a triangulation object produced with
+\code{\link{triangulate}}
 }
 \author{
-  David Sterratt
+David Sterratt
 }
 
