@@ -21,3 +21,4 @@ Depends:
 RoxygenNote: 5.0.1
 Suggests:
     testthat, geometry
+BugReports: https://github.com/davidcsterratt/RTriangle/issues
