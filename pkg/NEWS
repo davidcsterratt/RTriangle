@@ -1,4 +1,17 @@
-CHANGES IN VERSION 1.6-0.6  - Released 2012-11-07
+CHANGES IN VERSION 1.6-0.7  - Released 2016-??-??
+
+CODE IMPROVEMENTS
+
+* As per CRAN policies, the Authors@R field is now used.
+
+CHANGES IN VERSION 1.6-0.6  - Released 2014-08-08
+
+LICENCE CHANGE
+
+* The licence has changed from a combination of GPL-2 (for R code) and
+  Schewchuk's Triangle licence to CC BY-NC-SA 4.0. This change was
+  prompted by the CRAN maintainers and is due to Schewchuk's licence
+  not being a FOSS licence.
 
 BUG FIXES
 
