@@ -17,5 +17,7 @@ URL: http://triangle.R-Forge.R-project.org,
     http://www.cs.cmu.edu/~quake/triangle.html
 Date: 2016-04-19
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.0.0) 
 RoxygenNote: 5.0.1
+Suggests:
+    testthat, geometry
