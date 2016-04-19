@@ -43,4 +43,11 @@ test_that("If there are not enough points to construct a simplex, an error is th
   expect_error(triangulate(diag(2)))
 })
 
+test_that("Small values (1e-7 and below) of a do not lead to an error", {
+  # Use a small triangle to make the computational effort bearable
+  p <- pslg(P=rbind(c(0,0),c(1e-5,0),c(0,1e-5)))
 
+  tp <- triangulate(p,a=1e-7)
+  tp <- triangulate(p,a=1e-8)
+  tp <- triangulate(p,a=1e-9)
+})
