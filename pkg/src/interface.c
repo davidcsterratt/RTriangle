@@ -196,11 +196,37 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
     strcat(flags, "c");
   }
   if (isReal(a)) {
-    sprintf(opts, "a%f", *REAL(a));
+    int i;
+    TRIREAL y = 1;
+    // 100 digits are probably enough
+    for (i=0; i<100; ++i) {
+      if (*REAL(a) >= y) {
+        break;
+      }
+      y /= 10;
+    }
+    // Allow for 6 additional significant digits
+    i += 6;
+    char fstr[110];
+    sprintf(fstr, "a%%.%df\n", i);
+    sprintf(opts, fstr, *REAL(a));
     strcat(flags, opts);
   }
   if (isReal(q)) {
-    sprintf(opts, "q%f", *REAL(q));
+    int i;
+    TRIREAL y = 1;
+    // 100 digits are probably enough
+    for (i=0; i<100; ++i) {
+      if (*REAL(q) >= y) {
+        break;
+      }
+      y /= 10;
+    }
+    // Allow for 6 additional significant digits
+    i += 6;
+    char fstr[110];
+    sprintf(fstr, "q%%.%df\n", i);
+    sprintf(opts, fstr, *REAL(q));
     strcat(flags, opts);
   }
   if (isLogical(Y)) {
