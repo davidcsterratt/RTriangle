@@ -4,7 +4,6 @@
 /* #define SINGLE */
 
 #include <float.h>
-#include <stdlib.h>
 
 #ifdef SINGLE
 #define TRIREAL float
@@ -14,17 +13,14 @@
 
 #include "triangle.h"
 
-char *
-genfmtstr(char varname)
+int
+maxprecision()
 {
 #ifdef SINGLE
-  char *fmtstr = malloc(-FLT_MIN_10_EXP + FLT_DIG + FLT_MAX_10_EXP + 5);
-  sprintf(fmtstr, "%c%%.%df\n", varname, -FLT_MIN_10_EXP + FLT_DIG + 1);
+  return -FLT_MIN_10_EXP + FLT_DIG + 1;
 #else
-  char *fmtstr = malloc(-DBL_MIN_10_EXP + DBL_DIG + DBL_MAX_10_EXP + 5);
-  sprintf(fmtstr, "%c%%.%df\n", varname, -DBL_MIN_10_EXP + DBL_DIG + 1);
+  return -DBL_MIN_10_EXP + DBL_DIG + 1;
 #endif
-  return fmtstr;
 }
 
 /*****************************************************************************/
@@ -212,15 +208,11 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
     strcat(flags, "c");
   }
   if (isReal(a)) {
-    char *fstr = genfmtstr('a');
-    sprintf(opts, fstr, *REAL(a));
-    free(fstr);
+    sprintf(opts, "a%.*f", maxprecision(), *REAL(a));
     strcat(flags, opts);
   }
   if (isReal(q)) {
-    char *fstr = genfmtstr('q');
-    sprintf(opts, fstr, *REAL(q));
-    free(fstr);
+    sprintf(opts, "q%.*f", maxprecision(), *REAL(q));
     strcat(flags, opts);
   }
   if (isLogical(Y)) {
