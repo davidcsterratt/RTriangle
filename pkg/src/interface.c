@@ -3,6 +3,8 @@
 
 /* #define SINGLE */
 
+#include <float.h>
+
 #ifdef SINGLE
 #define TRIREAL float
 #else /* not SINGLE */
@@ -10,6 +12,12 @@
 #endif /* not SINGLE */
 
 #include "triangle.h"
+
+#ifdef SINGLE
+#define MAXPRECISION (-FLT_MIN_10_EXP + FLT_DIG + 1)
+#else
+#define MAXPRECISION (-DBL_MIN_10_EXP + DBL_DIG + 1)
+#endif
 
 /*****************************************************************************/
 /*                                                                           */
@@ -186,9 +194,9 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   /*   produce an edge list (e), a Voronoi diagram (v), and a triangle */
   /*   neighbor list (n).                                              */
 
-  char flags[200];
+  char flags[2000];
   strcpy(flags, "pevn");
-  char opts[200];
+  char opts[2000];
   /* If the segment list is empty, enclose the convex hull with */
   /* so that the triangulation is not eaten up. See documentation in */
   /*   triangle.c (-c folag) for more information */
@@ -196,37 +204,11 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
     strcat(flags, "c");
   }
   if (isReal(a)) {
-    int i;
-    TRIREAL y = 1;
-    // 100 digits are probably enough
-    for (i=0; i<100; ++i) {
-      if (*REAL(a) >= y) {
-        break;
-      }
-      y /= 10;
-    }
-    // Allow for 6 additional significant digits
-    i += 6;
-    char fstr[110];
-    sprintf(fstr, "a%%.%df\n", i);
-    sprintf(opts, fstr, *REAL(a));
+    sprintf(opts, "a%.*f", MAXPRECISION, *REAL(a));
     strcat(flags, opts);
   }
   if (isReal(q)) {
-    int i;
-    TRIREAL y = 1;
-    // 100 digits are probably enough
-    for (i=0; i<100; ++i) {
-      if (*REAL(q) >= y) {
-        break;
-      }
-      y /= 10;
-    }
-    // Allow for 6 additional significant digits
-    i += 6;
-    char fstr[110];
-    sprintf(fstr, "q%%.%df\n", i);
-    sprintf(opts, fstr, *REAL(q));
+    sprintf(opts, "q%.*f", MAXPRECISION, *REAL(q));
     strcat(flags, opts);
   }
   if (isLogical(Y)) {
