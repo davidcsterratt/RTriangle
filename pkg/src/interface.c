@@ -3,6 +3,9 @@
 
 /* #define SINGLE */
 
+#include <float.h>
+#include <stdlib.h>
+
 #ifdef SINGLE
 #define TRIREAL float
 #else /* not SINGLE */
@@ -10,6 +13,19 @@
 #endif /* not SINGLE */
 
 #include "triangle.h"
+
+char *
+genfmtstr(char varname)
+{
+#ifdef SINGLE
+  char *fmtstr = malloc(-FLT_MIN_10_EXP + FLT_DIG + FLT_MAX_10_EXP + 5);
+  sprintf(fmtstr, "%c%%.%df\n", varname, -FLT_MIN_10_EXP + FLT_DIG + 1);
+#else
+  char *fmtstr = malloc(-DBL_MIN_10_EXP + DBL_DIG + DBL_MAX_10_EXP + 5);
+  sprintf(fmtstr, "%c%%.%df\n", varname, -DBL_MIN_10_EXP + DBL_DIG + 1);
+#endif
+  return fmtstr;
+}
 
 /*****************************************************************************/
 /*                                                                           */
@@ -186,9 +202,9 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   /*   produce an edge list (e), a Voronoi diagram (v), and a triangle */
   /*   neighbor list (n).                                              */
 
-  char flags[200];
+  char flags[2000];
   strcpy(flags, "pevn");
-  char opts[200];
+  char opts[2000];
   /* If the segment list is empty, enclose the convex hull with */
   /* so that the triangulation is not eaten up. See documentation in */
   /*   triangle.c (-c folag) for more information */
@@ -196,37 +212,15 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
     strcat(flags, "c");
   }
   if (isReal(a)) {
-    int i;
-    TRIREAL y = 1;
-    // 100 digits are probably enough
-    for (i=0; i<100; ++i) {
-      if (*REAL(a) >= y) {
-        break;
-      }
-      y /= 10;
-    }
-    // Allow for 6 additional significant digits
-    i += 6;
-    char fstr[110];
-    sprintf(fstr, "a%%.%df\n", i);
+    char *fstr = genfmtstr('a');
     sprintf(opts, fstr, *REAL(a));
+    free(fstr);
     strcat(flags, opts);
   }
   if (isReal(q)) {
-    int i;
-    TRIREAL y = 1;
-    // 100 digits are probably enough
-    for (i=0; i<100; ++i) {
-      if (*REAL(q) >= y) {
-        break;
-      }
-      y /= 10;
-    }
-    // Allow for 6 additional significant digits
-    i += 6;
-    char fstr[110];
-    sprintf(fstr, "q%%.%df\n", i);
+    char *fstr = genfmtstr('q');
     sprintf(opts, fstr, *REAL(q));
+    free(fstr);
     strcat(flags, opts);
   }
   if (isLogical(Y)) {
