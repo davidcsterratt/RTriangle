@@ -1,8 +1,17 @@
-CHANGES IN VERSION 1.6-0.7  - Released 2016-??-??
+CHANGES IN VERSION 1.6-0.7  - Released 2016-05-10
 
 CODE IMPROVEMENTS
 
 * As per CRAN policies, the Authors@R field is now used.
+
+* More tests of triangulate() using testthat
+
+BUG FIXES
+
+* Fix for Issue #1: Small values of a (1e-7 and below) not registered
+  (https://github.com/davidcsterratt/RTriangle/pull/1 &
+   https://github.com/davidcsterratt/RTriangle/pull/2 )
+  Thanks to Elias Pipping for finding the bug and providing the fix.
 
 CHANGES IN VERSION 1.6-0.6  - Released 2014-08-08
 
@@ -18,7 +27,7 @@ BUG FIXES
 * Fix for Issue #2358: 	RTriangle_1.6-0.5.tar.gz does not pass 'R CMD check' on Windows	
   (https://r-forge.r-project.org/tracker/index.php?func=detail&aid=2358&group_id=1077&atid=4271)
   Thanks to Uwe Ligges for alerting me to this.
-
+  
 NEW FEATURES
 
 * CITATION file added

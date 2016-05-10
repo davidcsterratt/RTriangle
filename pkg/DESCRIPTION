@@ -15,7 +15,7 @@ Description: This is a port of Jonathan Shewchuk's Triangle library to
 Version: 1.6-0.7
 URL: http://triangle.R-Forge.R-project.org,
     http://www.cs.cmu.edu/~quake/triangle.html
-Date: 2016-04-19
+Date: 2016-05-10
 Depends:
     R (>= 3.0.0) 
 RoxygenNote: 5.0.1
