@@ -13,15 +13,11 @@
 
 #include "triangle.h"
 
-int
-maxprecision()
-{
 #ifdef SINGLE
-  return -FLT_MIN_10_EXP + FLT_DIG + 1;
+#define MAXPRECISION (-FLT_MIN_10_EXP + FLT_DIG + 1)
 #else
-  return -DBL_MIN_10_EXP + DBL_DIG + 1;
+#define MAXPRECISION (-DBL_MIN_10_EXP + DBL_DIG + 1)
 #endif
-}
 
 /*****************************************************************************/
 /*                                                                           */
@@ -208,11 +204,11 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
     strcat(flags, "c");
   }
   if (isReal(a)) {
-    sprintf(opts, "a%.*f", maxprecision(), *REAL(a));
+    sprintf(opts, "a%.*f", MAXPRECISION, *REAL(a));
     strcat(flags, opts);
   }
   if (isReal(q)) {
-    sprintf(opts, "q%.*f", maxprecision(), *REAL(q));
+    sprintf(opts, "q%.*f", MAXPRECISION, *REAL(q));
     strcat(flags, opts);
   }
   if (isLogical(Y)) {
