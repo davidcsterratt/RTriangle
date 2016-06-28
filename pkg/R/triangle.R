@@ -113,6 +113,10 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   ## If hole not specified, set it to empty matrix
   if (any(is.na(H))) {
     H <- matrix(0, 0, 2)
+  } else {
+    if (ncol(H) != 2) {
+      stop("Matrix of holes H should have 2 columns")
+    }
   }
   
   ## Assemble components, setting storage mode of segments and markers
