@@ -51,3 +51,34 @@ test_that("Small values (1e-7 and below) of a do not lead to an error", {
   tp <- triangulate(p,a=1e-8)
   tp <- triangulate(p,a=1e-9)
 })
+
+test_that("triangulate can triangulate a hole", {
+   p<-pslg(rbind(c(2, 2), c(2, -2), c(-2, -2), c(-2, 2),
+                 c(1, 1), c(1, -1), c(-1, -1), c(-1, 1)),
+           S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 1),
+                   c(5, 6), c(6, 7), c(7, 8), c(8, 5)),
+           H=rbind(c(0, 0)))
+   pt <- triangulate(p)
+
+   ## There should be no diagonals across the hole
+   expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(5, 7),x ))})))
+   expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(6, 8),x ))})))
+})
+
+test_that("triangulate can triangulate two holes", {
+   p<-pslg(rbind(c( 4,  4), c( 4, -4), c(-4, -4), c(-4,  4),
+                 c( 3,  3), c( 3,  1), c( 1,  1), c( 1,  3),
+                 c(-3, -3), c(-3, -1), c(-1, -1), c(-1, -3)),
+           S=rbind(c(1, 2), c(2, 3), c(3, 4), c(4, 1),
+                   c(5, 6), c(6, 7), c(7, 8), c(8, 5),
+                   c(9, 10), c(10, 11), c(11, 12), c(12, 9)),
+           H=rbind(c(2, 2), c(-2, -2)))
+   pt <- triangulate(p)
+
+   ## There should be no diagonals across the holes
+   expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(5, 7),x ))})))
+   expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(6, 8),x ))})))
+   expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(9, 11),x ))})))
+   expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(10, 12),x ))})))
+})
+
