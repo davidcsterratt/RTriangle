@@ -13,11 +13,11 @@ Description: This is a port of Jonathan Shewchuk's Triangle library to
     Delaunay triangulations, Voronoi diagrams, and high-quality
     triangular meshes. The latter can be generated with no small or
     large angles, and are thus suitable for finite element analysis."
-Version: 1.6-0.7
+Version: 1.6-0.8
 URL: http://triangle.R-Forge.R-project.org,
      http://www.cs.cmu.edu/~quake/triangle.html,
      https://github.com/davidcsterratt/RTriangle
-Date: 2016-05-10
+Date: 2016-06-28
 Depends:
     R (>= 3.0.0) 
 RoxygenNote: 5.0.1
