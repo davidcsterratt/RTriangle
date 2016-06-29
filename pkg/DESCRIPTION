@@ -2,8 +2,9 @@ Copyright: 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard
     Shewchuk; 2011-2016 David Sterratt
 Package: RTriangle
 Authors@R: c(person("Jonathan Richard", "Shewchuk" , role=c("ctb", "cph")),
-    person("David C.", "Sterratt", role=c("cph","aut","cre"),
-    email="david.c.sterratt@ed.ac.uk"))
+             person("David C.", "Sterratt", role=c("cph","aut","cre"),
+               email="david.c.sterratt@ed.ac.uk"),
+             person("Elias", "Pipping", role=c("ctb")))
 License: CC BY-NC-SA 4.0
 Title: Triangle - A 2D Quality Mesh Generator and Delaunay Triangulator
 Description: This is a port of Jonathan Shewchuk's Triangle library to
