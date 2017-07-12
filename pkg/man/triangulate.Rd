@@ -100,4 +100,3 @@ plot(tA)
 \author{
 David Sterratt
 }
-

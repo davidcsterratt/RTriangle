@@ -64,4 +64,3 @@ is enforced.
 \author{
 David Sterratt
 }
-

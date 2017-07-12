@@ -20,4 +20,3 @@ used in Shewchuk's Triangle library
 \author{
 David Sterratt
 }
-

@@ -2,8 +2,8 @@
 % Please edit documentation in R/triangle-package.R
 \docType{package}
 \name{RTriangle-package}
-\alias{RTriangle}
 \alias{RTriangle-package}
+\alias{RTriangle}
 \title{Generate 2D Quality meshes and constrained Delaunay triangulations}
 \description{
 Generate 2D Quality meshes and constrained Delaunay triangulations
@@ -43,9 +43,6 @@ plot(tA)
 tA <- triangulate(A, a=0.001)
 plot(tA)
 }
-\author{
-David C. Sterratt \email{david.c.sterratt@ed.ac.uk}
-}
 \references{
 \itemize{
 \item \url{http://www.cs.cmu.edu/~quake/triangle.html}
@@ -62,5 +59,7 @@ Applications 22(1-3):21-74, May 2002.}
 \seealso{
 \code{\link{triangulate}}
 }
+\author{
+David C. Sterratt \email{david.c.sterratt@ed.ac.uk}
+}
 \keyword{package}
-

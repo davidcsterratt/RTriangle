@@ -17,4 +17,3 @@ Plot \code{\link{pslg}} object
 \author{
 David Sterratt
 }
-

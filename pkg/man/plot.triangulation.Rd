@@ -17,4 +17,3 @@ Plots a triangulation object produced with \code{\link{triangulate}}
 \author{
 David Sterratt
 }
-
