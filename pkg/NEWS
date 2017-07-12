@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.6-0.9  - Released 2016-07-12
+
+BUG FIX
+
+* Fix fof Issue #4: Found no calls to: 'R_registerRoutines',
+  'R_useDynamicSymbols'
+  https://github.com/davidcsterratt/RTriangle/issues/4
+
 CHANGES IN VERSION 1.6-0.8  - Released 2016-06-30
 
 BUG FIX
