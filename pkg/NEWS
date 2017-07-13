@@ -1,6 +1,9 @@
-CHANGES IN VERSION 1.6-0.9  - Released 2016-07-12
+CHANGES IN VERSION 1.6-0.9  - Released 2016-07-13
 
-BUG FIX
+BUG FIXES
+
+* Fix for Issue #5: Crash under Windows i386 with particular PSLG
+  https://github.com/davidcsterratt/RTriangle/issues/5
 
 * Fix fof Issue #4: Found no calls to: 'R_registerRoutines',
   'R_useDynamicSymbols'
