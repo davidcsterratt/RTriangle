@@ -82,3 +82,7 @@ test_that("triangulate can triangulate two holes", {
    expect_true(all(!apply(pt$T, 1, function(x) {all(is.element(c(10, 12),x ))})))
 })
 
+test_that("triangulate can triangulate an example that has crashed on Win i386", {
+  load(file.path(system.file(package = "RTriangle"), "extdata", "win-i386-crash.Rdata"))
+  pt <- triangulate(p, Y=TRUE, j=TRUE, Q=TRUE)
+})
