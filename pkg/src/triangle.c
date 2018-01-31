@@ -5019,10 +5019,14 @@ TRIREAL *h;
     while ((eindex < elen) && (findex < flen)) {
       if ((fnow > enow) == (fnow > -enow)) {
         Two_Sum(Q, enow, Qnew, hh);
-        enow = e[++eindex];
+        eindex++;
+        if (eindex < elen)
+          enow = e[eindex];
       } else {
         Two_Sum(Q, fnow, Qnew, hh);
-        fnow = f[++findex];
+        findex++;
+        if (findex < flen)
+          fnow = f[findex];
       }
       Q = Qnew;
       if (hh != 0.0) {
@@ -5032,7 +5036,9 @@ TRIREAL *h;
   }
   while (eindex < elen) {
     Two_Sum(Q, enow, Qnew, hh);
-    enow = e[++eindex];
+    eindex++;
+    if (eindex < elen)
+      enow = e[eindex];
     Q = Qnew;
     if (hh != 0.0) {
       h[hindex++] = hh;
@@ -5040,7 +5046,9 @@ TRIREAL *h;
   }
   while (findex < flen) {
     Two_Sum(Q, fnow, Qnew, hh);
-    fnow = f[++findex];
+    findex++;
+    if (findex < flen)
+      fnow = f[findex];
     Q = Qnew;
     if (hh != 0.0) {
       h[hindex++] = hh;
