@@ -76,7 +76,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
 
   ## Check that there are no duplicate rows in P
-  if (anyDuplicated(P)) {
+  if (anyDuplicated(as.data.frame(P))) {  ## faster for data.frame than matrix
     stop("Duplicated vertices in P.")
   }
 
