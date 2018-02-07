@@ -334,11 +334,11 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
   ## code crashes if fed with them
   check.na.nan <- function(x) {
     if (!is.null(x)) {
+      if (anyNA(x)) {
+        stop(paste("NA in", deparse(substitute(x))))
+      }
       if (any(is.nan(x))) {
         stop(paste("NaN in", deparse(substitute(x))))
-      }
-      if (any(is.na(x))) {
-        stop(paste("NA in", deparse(substitute(x))))
       }
     }
   }
