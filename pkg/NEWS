@@ -1,9 +1,18 @@
+CHANGES IN VERSION 1.6-0.11  - Released 2018-02-07
+
+CODE IMPROVEMENT
+
+* Fix for Issue #7: Potential anyDuplicated speed-up for pslg 
+  https://github.com/davidcsterratt/RTriangle/issues/7
+  Thanks to Michael Sumner for suggesting this improvement.
+
 CHANGES IN VERSION 1.6-0.10  - Released 2018-01-30
 
 BUG FIX
 
 * Fix for Issue #6: Array overrruns
   https://github.com/davidcsterratt/RTriangle/issues/6
+  Thanks to Brian Ripley for reporting the bug.
 
 CHANGES IN VERSION 1.6-0.9  - Released 2017-07-13
 

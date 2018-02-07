@@ -4,7 +4,8 @@ Package: RTriangle
 Authors@R: c(person("Jonathan Richard", "Shewchuk" , role=c("ctb", "cph")),
              person("David C.", "Sterratt", role=c("cph","aut","cre"),
                email="david.c.sterratt@ed.ac.uk"),
-             person("Elias", "Pipping", role=c("ctb")))
+             person("Elias", "Pipping", role=c("ctb")),
+             person("Michael", "Sumner", role=c("ctb")))
 License: CC BY-NC-SA 4.0
 Title: Triangle - A 2D Quality Mesh Generator and Delaunay Triangulator
 Description: This is a port of Jonathan Shewchuk's Triangle library to
@@ -13,10 +14,10 @@ Description: This is a port of Jonathan Shewchuk's Triangle library to
     Delaunay triangulations, Voronoi diagrams, and high-quality
     triangular meshes. The latter can be generated with no small or
     large angles, and are thus suitable for finite element analysis."
-Version: 1.6-0.10
+Version: 1.6-0.11
 URL: https://github.com/davidcsterratt/RTriangle,
      http://www.cs.cmu.edu/~quake/triangle.html
-Date: 2018-01-30
+Date: 2018-02-07
 Depends:
     R (>= 3.0.0) 
 RoxygenNote: 6.0.1
