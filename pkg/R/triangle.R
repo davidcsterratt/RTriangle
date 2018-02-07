@@ -1,3 +1,17 @@
+## Internal function to check for missing values
+## It is necessary to check for NAs and NaNs, as the triangulate C
+## code crashes if fed with them
+check.na.nan <- function(x) {
+  if (!is.null(x)) {
+    if (anyNA(x)) {
+      stop(paste("NA in", deparse(substitute(x))))
+    }
+    if (any(is.nan(x))) {
+      stop(paste("NaN in", deparse(substitute(x))))
+    }
+  }
+}
+
 ##' A Planar Straight Line Graph (PSLG) is a collection of vertices
 ##' and segments. Segments are edges whose endpoints are vertices in
 ##' the PSLG, and whose presence in any mesh generated from the PSLG
@@ -55,18 +69,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   SB <- as.integer(SB)
   H  <- as.matrix(H)
   
-  ## It is necessary to check for NAs and NaNs, as the triangulate C
-  ## code crashes if fed with them
-  check.na.nan <- function(x) {
-    if (!is.null(x)) {
-      if (any(is.nan(x))) {
-        stop(paste("NaN in", deparse(substitute(x))))
-      }
-      if (any(is.na(x))) {
-        stop(paste("NA in", deparse(substitute(x))))
-      }
-    }
-  }
+
   
   check.na.nan(P)
 
@@ -81,7 +84,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
 
   ## If attributes not specified, set them to a matrix with zero columns
-  if (any(is.na(PA))) {
+  if (anyNA(PA)) {
     PA <- matrix(0, nrow(P), 0)
   }
   ## Make sure the size of the point attribute matrix is correct
@@ -96,7 +99,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   PB <- rep(PB, length.out=nrow(P))
   
   ## Deal with S
-  if (any(is.na(S))) {
+  if (anyNA(S)) {
     S <- matrix(0, 0, 2)
   } else {
     if (ncol(S) != 2) {
@@ -105,13 +108,13 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
 
   ## If boundary segments not specified, set them to 0
-  if (any(is.na(SB))) {
+  if (anyNA(SB)) {
     SB <- 0
   }
   SB <- rep(SB, length.out=nrow(S))
   
   ## If hole not specified, set it to empty matrix
-  if (any(is.na(H))) {
+  if (anyNA(H)) {
     H <- matrix(0, 0, 2)
   } else {
     if (ncol(H) != 2) {
@@ -330,18 +333,7 @@ plot.triangulation <- function(x, ...) {
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                         D=FALSE, S=Inf,
                         V=0, Q=TRUE) {
-  ## It is necessary to check for NAs and NaNs, as the triangulate C
-  ## code crashes if fed with them
-  check.na.nan <- function(x) {
-    if (!is.null(x)) {
-      if (anyNA(x)) {
-        stop(paste("NA in", deparse(substitute(x))))
-      }
-      if (any(is.nan(x))) {
-        stop(paste("NaN in", deparse(substitute(x))))
-      }
-    }
-  }
+
   
   check.na.nan(a)
   check.na.nan(q)
