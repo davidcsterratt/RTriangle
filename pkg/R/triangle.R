@@ -69,6 +69,11 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
   
   check.na.nan(P)
+  if (length(PB) > 1) check.na.nan(PB)
+  if (length(PA) > 1) check.na.nan(PA)
+  if (length(S) > 1) check.na.nan(S)
+  if (length(SB) > 1) check.na.nan(SB)
+  if (length(H) > 1) check.na.nan(H)
 
   ## Deal with P
   if (ncol(P) != 2) {
@@ -81,7 +86,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
 
   ## If attributes not specified, set them to a matrix with zero columns
-  if (any(is.na(PA))) {
+  if ( (length(PA) == 1) && (is.na(PA))) {
     PA <- matrix(0, nrow(P), 0)
   }
   ## Make sure the size of the point attribute matrix is correct
@@ -90,13 +95,13 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
   
   ## If boundary vertices not specified, set them to 0
-  if (is.na(PB)) {
+  if ( (length(PB) == 1) && (is.na(PB))) {
     PB <- 0
   }
   PB <- rep(PB, length.out=nrow(P))
   
   ## Deal with S
-  if (any(is.na(S))) {
+  if ( (length(S) == 1) && (is.na(S))) {
     S <- matrix(0, 0, 2)
   } else {
     if (ncol(S) != 2) {
@@ -105,13 +110,13 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
 
   ## If boundary segments not specified, set them to 0
-  if (any(is.na(SB))) {
+  if ( (length(SB) == 1) && (is.na(SB))) {
     SB <- 0
   }
   SB <- rep(SB, length.out=nrow(S))
   
   ## If hole not specified, set it to empty matrix
-  if (any(is.na(H))) {
+  if ( (length(H) == 1) && (is.na(H))) {
     H <- matrix(0, 0, 2)
   } else {
     if (ncol(H) != 2) {
