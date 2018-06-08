@@ -90,7 +90,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
   
   ## If boundary vertices not specified, set them to 0
-  if (is.na(PB)) {
+  if (any(is.na(PB))) {
     PB <- 0
   }
   PB <- rep(PB, length.out=nrow(P))
