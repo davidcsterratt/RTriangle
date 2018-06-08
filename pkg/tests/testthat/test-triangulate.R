@@ -86,3 +86,27 @@ test_that("triangulate can triangulate an example that has crashed on Win i386",
   load(file.path(system.file(package = "RTriangle"), "extdata", "win-i386-crash.Rdata"))
   pt <- triangulate(p, Y=TRUE, j=TRUE, Q=TRUE)
 })
+
+test_that("triangulate can triangulate an example that would create infinite numbers of Steiner points and lead to a crash", {
+  load(file.path(system.file(package = "RTriangle"), "extdata", "inf-steiner.RData"))
+  ## Works
+  tri <- triangulate(pslg(P=P, S=S))
+
+  ## Works
+  tri <- triangulate(pslg(P=P, S=S), a=6100144/500)
+
+  ## Works
+  tri <- triangulate(pslg(P=P, S=S), a=6100144/500, q=20)
+
+  ## Supress Steiner points in boundary
+  tri <- triangulate(pslg(P=P, S=S), Y = TRUE)
+  
+  ## Supress Steiner poitns in boundary and demand quality
+  ## If S=Inf Gives calloc error ?
+  tri <- triangulate(pslg(P=P, S=S), a=6100144/500, q=20, Y = TRUE)
+  expect_equal(nrow(P) + 10000, nrow(tri$P))
+
+  ## If S=Inf Gives calloc error ?
+  tri <- triangulate(pslg(P=P, S=S), a=6100144/500, q=20, Y = TRUE, S=100)
+  expect_equal(nrow(P) + 100, nrow(tri$P))
+})
