@@ -373,7 +373,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                as.integer(V),
                Q,
                PACKAGE="RTriangle")
-  names(out) <- c("P", "PB", "PA", "T", "S", "SB", "E", "EB", "VP", "VE", "VN", "VA")
+  names(out) <- c("P", "PB", "PA", "T", "S", "SB", "E", "EB", "VP", "VE", "VN", "VA", "NB")
   class(out) <- "triangulation"
   return(out)
 }
