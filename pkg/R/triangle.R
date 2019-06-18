@@ -90,7 +90,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   }
   
   ## If boundary vertices not specified, set them to 0
-  if (is.na(PB)) {
+  if (any(is.na(PB))) {
     PB <- 0
   }
   PB <- rep(PB, length.out=nrow(P))
@@ -253,36 +253,39 @@ plot.triangulation <- function(x, ...) {
 ##' in which additional vertices, called Steiner points, can be
 ##' inserted into segments to improved the quality of the
 ##' triangulation.  To prevent the insertion of Steiner points on
-##' boundary segments, specify \code{Y=1}. If the maximum triangle
+##' boundary segments, specify \code{Y=TRUE}. If the maximum triangle
 ##' area \code{a} is specified, the area of each triangle is not
 ##' allowed to exceed this value. If the the minimum angle \code{q} is
 ##' specified, no triangle angle is allowed to be below this value.
 ##'
 ##' @title Triangulate a Planar Straight Line Graph
 ##' @param p Planar straight line graph object; see
-##' \code{\link{pslg}}.
+##'   \code{\link{pslg}}.
 ##' @param a Maximum triangle area. If specified, triangles cannot be
-##' larger than this area.
+##'   larger than this area.
 ##' @param q Minimum triangle angle in degrees.
 ##' @param Y If \code{TRUE} prohibits the insertion of Steiner points
-##' on the mesh boundary.
+##'   on the mesh boundary.
 ##' @param j If \code{TRUE} jettisons vertices that are not part of
-##' the final triangulation from the output.
+##'   the final triangulation from the output.
 ##' @param D If \code{TRUE} produce a conforming Delaunay
-##' triangulation. This ensures that all the triangles in the mesh are
-##' truly Delaunay, and not merely constrained Delaunay.  This option
-##' invokes Ruppert's original algorithm, which splits every
-##' subsegment whose diametral circle is encroached.  It usually
-##' increases the number of vertices and triangles.
-##' @param S Specifies the maximum number of added Steiner points.
-##' @param V Verbosity level. Specify higher values  for more detailed
-##' information about what the Triangle library is doing.
+##'   triangulation. This ensures that all the triangles in the mesh
+##'   are truly Delaunay, and not merely constrained Delaunay. This
+##'   option invokes Ruppert's original algorithm, which splits every
+##'   subsegment whose diametral circle is encroached. It usually
+##'   increases the number of vertices and triangles.
+##' @param S Specifies the maximum number of added Steiner points. If
+##'   set to \code{Inf}, there is no limit on the number of Steine
+##'   points added - but this can lead to huge amounts of memory being
+##'   allocated.
+##' @param V Verbosity level. Specify higher values for more detailed
+##'   information about what the Triangle library is doing.
 ##' @param Q If \code{TRUE} suppresses all explanation of what the
-##' Triangle library is doing, unless an error occurs. 
+##'   Triangle library is doing, unless an error occurs.
 ##' @return A object with class \code{triangulation}. This contains
-##' the information in the same format as the  PSLG, \code{p}, with an
-##' updated list of points \code{P} and point attributes \code{PA},
-##' along with the following variables:
+##'   the information in the same format as the PSLG, \code{p}, with
+##'   an updated list of points \code{P} and point attributes
+##'   \code{PA}, along with the following variables:
 ##' 
 ##' \item{\code{T}}{Triangulation specified as 3 column matrix
 ##' in which each row contains indices in \code{P} of vertices.}
@@ -328,7 +331,7 @@ plot.triangulation <- function(x, ...) {
 ##' @export
 ##' @useDynLib RTriangle
 triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
-                        D=FALSE, S=Inf,
+                        D=FALSE, S=10000,
                         V=0, Q=TRUE) {
   ## It is necessary to check for NAs and NaNs, as the triangulate C
   ## code crashes if fed with them
