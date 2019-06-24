@@ -4,8 +4,8 @@
 \alias{triangulate}
 \title{Triangulate a Planar Straight Line Graph}
 \usage{
-triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE, D = FALSE,
-  S = 10000, V = 0, Q = TRUE)
+triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE,
+  D = FALSE, S = 10000, V = 0, Q = TRUE)
 }
 \arguments{
 \item{p}{Planar straight line graph object; see
