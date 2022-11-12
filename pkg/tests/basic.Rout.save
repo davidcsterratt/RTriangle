@@ -1,7 +1,6 @@
 
-R version 2.15.0 (2012-03-30)
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 4.2.1 (2022-06-23) -- "Funny-Looking Kid"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -40,7 +39,7 @@ $PB
 [5,]    1
 
 $PA
-
+    
 [1,]
 [2,]
 [3,]
@@ -112,10 +111,16 @@ $VN
 [3,]  0.5  0.5
 
 $VA
-
+    
 [1,]
 [2,]
 [3,]
+
+$NB
+     [,1] [,2] [,3]
+[1,]    3   -1   -1
+[2,]   -1   -1    3
+[3,]    1   -1    2
 
 attr(,"class")
 [1] "triangulation"
