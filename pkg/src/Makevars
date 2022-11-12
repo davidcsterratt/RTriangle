@@ -1,1 +1,1 @@
-PKG_CPPFLAGS = -include RTriangle.h
+PKG_CPPFLAGS = -include RTriangle.h -DANSI_DECLARATORS -DVOID=void

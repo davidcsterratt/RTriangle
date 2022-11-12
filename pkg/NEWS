@@ -1,4 +1,4 @@
-CHANGES IN VERSION 1.6-0.11  - Released 2018-06-08
+CHANGES IN VERSION 1.6-0.11  - Released 2022-11-12
 
 BUG FIX
 
@@ -6,6 +6,10 @@ BUG FIX
   https://github.com/davidcsterratt/RTriangle/issues/12
   Thanks to Inma Soldado Magraner for reporting a problem in Retistruct that
   leads to this error.
+
+* Fix for Issue #18: Function declaration without prototype is deprecated
+  https://github.com/davidcsterratt/RTriangle/issues/18
+  Thanks to the CRAN maintainers for reporting this.
 
 CODE IMPROVEMENT
 
