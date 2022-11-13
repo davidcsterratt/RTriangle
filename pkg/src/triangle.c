@@ -3281,7 +3281,11 @@ void info()
 /*                                                                           */
 /*****************************************************************************/
 
+#ifdef ANSI_DECLARATORS
+void internalerror(void)
+#else /* not ANSI_DECLARATORS */
 void internalerror()
+#endif /* not ANSI_DECLARATORS */
 {
   printf("  Please report this bug to jrs@cs.berkeley.edu\n");
   printf("  Include the message above, your input data set, and the exact\n");
@@ -4900,7 +4904,11 @@ struct osub *newsubseg;
 /*                                                                           */
 /*****************************************************************************/
 
+#ifdef ANSI_DECLARATORS
+void exactinit(void)
+#else /* not ANSI_DECLARATORS */
 void exactinit()
+#endif /* not ANSI_DECLARATORS */
 {
   TRIREAL half;
   TRIREAL check, lastcheck;
@@ -13228,7 +13236,11 @@ struct behavior *b;
 
 #ifndef CDT_ONLY
 
+#ifdef ANSI_DECLARATORS
+void precisionerror(void)
+#else /* not ANSI_DECLARATORS */
 void precisionerror()
+#endif /* not ANSI_DECLARATORS */
 {
   printf("Try increasing the area criterion and/or reducing the minimum\n");
   printf("  allowable angle so that tiny triangles are not created.\n");

@@ -25,6 +25,11 @@
 /*                                                                           */
 /*****************************************************************************/
 
+#ifdef ANSI_DECLARATORS
+void report(struct triangulateio *io, int markers, int reporttriangles,
+            int reportneighbors, int reportsegments,
+            int reportedges, int reportnorms)
+#else /* not ANSI_DECLARATORS */
 void report(io, markers, reporttriangles, reportneighbors, reportsegments,
             reportedges, reportnorms)
 struct triangulateio *io;
@@ -34,6 +39,7 @@ int reportneighbors;
 int reportsegments;
 int reportedges;
 int reportnorms;
+#endif /* not ANSI_DECLARATORS */
 {
   int i, j;
 
