@@ -200,9 +200,9 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   /*   produce an edge list (e), a Voronoi diagram (v), and a triangle */
   /*   neighbor list (n).                                              */
 
-  char flags[2000];
+  char flags[MAXPRECISION*6 + 20];
   strcpy(flags, "pevn");
-  char opts[2000];
+  char opts[MAXPRECISION*2 + 1];
   /* If the segment list is empty, enclose the convex hull with */
   /* so that the triangulation is not eaten up. See documentation in */
   /*   triangle.c (-c folag) for more information */
@@ -210,12 +210,12 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
     strcat(flags, "c");
   }
   if (isReal(a)) {
-    sprintf(opts, "a%.*f", MAXPRECISION, *REAL(a));
-    strcat(flags, opts);
+    snprintf(opts, MAXPRECISION*2, "a%.*f", MAXPRECISION, *REAL(a));
+    strncat(flags, opts, MAXPRECISION*2 + 1);
   }
   if (isReal(q)) {
-    sprintf(opts, "q%.*f", MAXPRECISION, *REAL(q));
-    strcat(flags, opts);
+    snprintf(opts, MAXPRECISION*2, "q%.*f", MAXPRECISION, *REAL(q));
+    strncat(flags, opts, MAXPRECISION*2 + 1);
   }
   if (isLogical(Y)) {
     if (*LOGICAL(Y) == TRUE) {
@@ -224,31 +224,31 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   }
   if (isInteger(SS)) {
     if (*INTEGER(SS) >= 0) {
-      sprintf(opts, "S%i", *INTEGER(SS));
-      strcat(flags, opts);
+      snprintf(opts, MAXPRECISION*2, "S%i", *INTEGER(SS));
+      strncat(flags, opts, MAXPRECISION*2 + 1);
     }
   }
   if (isLogical(j)) {
     if (*LOGICAL(j) == TRUE) {
-      strcat(flags, "j");
+      strncat(flags, "j", 2);
     }
   }
   if (isLogical(D)) {
     if (*LOGICAL(D) == TRUE) {
-      strcat(flags, "D");
+      strncat(flags, "D", 2);
     }
   }
   if (isInteger(V)) {
     if (*INTEGER(V) == 1) {
-      strcat(flags, "V");
+      strncat(flags, "V", 2);
     }
     if (*INTEGER(V) == 2) {
-      strcat(flags, "VV");
+      strncat(flags, "VV", 3);
     }
   }
   if (isLogical(Q)) {
     if (*LOGICAL(Q) == TRUE) {
-      strcat(flags, "Q");
+      strncat(flags, "Q", 2);
     }
   }
 
