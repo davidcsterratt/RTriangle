@@ -40,7 +40,7 @@ check.na.nan <- function(x) {
 ##' vertices are taken to be the segments. Any vertices outside the
 ##' region enclosed by the segments are eaten away by the
 ##' triangulation algorithm. If the segments do not enclose a region
-##' the whole triangulation may be eaten away. 
+##' the whole triangulation may be eaten away.
 ##' @param SB Vector of boundary markers of segments. For each segment
 ##' this is 1 if the segment should be on a boundary of any mesh
 ##' generated from the PSLG and 0 otherwise. There should be as many
@@ -68,9 +68,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   S  <- as.matrix(S)
   SB <- as.integer(SB)
   H  <- as.matrix(H)
-  
 
-  
   check.na.nan(P)
 
   ## Deal with P
@@ -91,13 +89,13 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
   if (nrow(PA) != nrow(P)) {
     stop("Point attribute matrix PA does not have same number of rows the point matrix P")
   }
-  
+
   ## If boundary vertices not specified, set them to 0
   if (any(is.na(PB))) {
     PB <- 0
   }
   PB <- rep(PB, length.out=nrow(P))
-  
+
   ## Deal with S
   if (anyNA(S)) {
     S <- matrix(0, 0, 2)
@@ -112,7 +110,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
     SB <- 0
   }
   SB <- rep(SB, length.out=nrow(S))
-  
+
   ## If hole not specified, set it to empty matrix
   if (anyNA(H)) {
     H <- matrix(0, 0, 2)
@@ -121,7 +119,7 @@ pslg <- function(P, PB=NA, PA=NA, S=NA, SB=NA, H=NA) {
       stop("Matrix of holes H should have 2 columns")
     }
   }
-  
+
   ## Assemble components, setting storage mode of segments and markers
   ## to integer for the benefit of triangulate()
   storage.mode(P)  <- "double"
@@ -289,7 +287,7 @@ plot.triangulation <- function(x, ...) {
 ##'   the information in the same format as the PSLG, \code{p}, with
 ##'   an updated list of points \code{P} and point attributes
 ##'   \code{PA}, along with the following variables:
-##' 
+##'
 ##' \item{\code{T}}{Triangulation specified as 3 column matrix
 ##' in which each row contains indices in \code{P} of vertices.}
 ##' \item{\code{E}}{Set of edges in the triangulation.}
@@ -326,7 +324,7 @@ plot.triangulation <- function(x, ...) {
 ##' ## is smaller than 20 degrees
 ##' tA <- triangulate(A, q=20)
 ##' plot(tA)
-##' ## Triangulate the PSLG with triangles in which no triangle has 
+##' ## Triangulate the PSLG with triangles in which no triangle has
 ##' ## area greater than 0.001
 ##' tA <- triangulate(A, a=0.001)
 ##' plot(tA)
@@ -337,7 +335,6 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
                         D=FALSE, S=10000,
                         V=0, Q=TRUE) {
 
-  
   check.na.nan(a)
   check.na.nan(q)
   check.na.nan(V)
@@ -347,7 +344,7 @@ triangulate <- function(p, a=NULL, q=NULL, Y=FALSE, j=FALSE,
   } else {
     SS <- S
   }
-  
+
   ## Call the main routine
   out <- .Call("R_triangulate",
                t(p$P),
