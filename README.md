@@ -10,3 +10,7 @@ devtools::install_github("davidcsterratt/RTriangle", subdir="pkg")
 ```
 
 [Old bug reports are hosted on RForge](http://r-forge.r-project.org/tracker/?group_id=1077)
+
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/davidcsterratt/RTriangle.svg?branch=master)](https://travis-ci.org/davidcsterratt/RTriangle)
+<!-- badges: end -->

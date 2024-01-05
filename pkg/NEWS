@@ -1,4 +1,40 @@
-CHANGES IN VERSION 1.6-0.11  - Released 2018-02-07
+CHANGES IN VERSION 1.6-0.13  - Released 2024-01-04
+
+BUG FIX
+
+* Fix for Issue #20: -Wformat-extra-args warnings
+  https://github.com/davidcsterratt/RTriangle/issues/20
+  Thanks to the CRAN maintainers for reporting this. Update
+  fixes format to prevent compiler warning.
+
+* Fix for Issue #21: -Wformat= warnings bug
+  https://github.com/davidcsterratt/RTriangle/issues/21
+  Thanks to the CRAN maintainers for reporting this. Update
+  fixes format to prevent compiler warning.
+
+CHANGES IN VERSION 1.6-0.12  - Released 2023-01-14
+
+BUG FIX
+
+* Fix for Issue #19: Compiled code should not call sprintf
+  https://github.com/davidcsterratt/RTriangle/issues/19
+  Thanks to the CRAN maintainers for reporting this. Update uses
+  safer snprintf and strncat functions.
+
+CHANGES IN VERSION 1.6-0.11  - Released 2022-11-13
+
+BUG FIX
+
+* Fix for Issue #12: RTriangle runs out of memory
+  https://github.com/davidcsterratt/RTriangle/issues/12
+  Thanks to Inma Soldado Magraner for reporting a problem in Retistruct that
+  leads to this error.
+
+* Fix for Issue #18: Function declaration without prototype is deprecated
+  https://github.com/davidcsterratt/RTriangle/issues/18
+  Thanks to the CRAN maintainers for reporting this.
+  Updated code produces no "declaration without prototype" compilation errors
+  when compiled with gcc-11 and the -std=gnu99 -Wstrict-prototypes flags
 
 CODE IMPROVEMENT
 

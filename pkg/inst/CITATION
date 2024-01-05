@@ -1,13 +1,13 @@
 bibentry(bibtype= "InCollection",
-         title = "Triangle: Engineering a 2D quality mesh
-                  generator and Delaunay triangulator",
-         author = personList(as.person("Jonathan Richard Shewchuk")),
+         title = "Triangle: {Engineering} a {2D} quality mesh
+                  generator and {Delaunay} triangulator",
+         author = c(person("Jonathan Richard", "Shewchuk")),
          year = 1996,
          month = "may",
          booktitle = "Applied Computational Geometry: Towards Geometric
                   Engineering",
-         editor = personList(as.person("Ming C. Lin"),
-                             as.person("Dinesh Manocha")),
+         editor = c(person("Ming C.", "Lin"),
+                    person("Dinesh", "Manocha")),
          series = "Lecture Notes in Computer Science",
          volume = 1148,
          publisher = "Springer-Verlag",

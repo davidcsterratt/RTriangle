@@ -1,2 +1,6 @@
 *.o
 *.so
+Library
+Outputs
+revdep
+RTriangle.Rcheck

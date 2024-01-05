@@ -4,8 +4,8 @@
 \alias{triangulate}
 \title{Triangulate a Planar Straight Line Graph}
 \usage{
-triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE, D = FALSE,
-  S = Inf, V = 0, Q = TRUE)
+triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE,
+  D = FALSE, S = 10000, V = 0, Q = TRUE)
 }
 \arguments{
 \item{p}{Planar straight line graph object; see
@@ -23,15 +23,18 @@ on the mesh boundary.}
 the final triangulation from the output.}
 
 \item{D}{If \code{TRUE} produce a conforming Delaunay
-triangulation. This ensures that all the triangles in the mesh are
-truly Delaunay, and not merely constrained Delaunay.  This option
-invokes Ruppert's original algorithm, which splits every
-subsegment whose diametral circle is encroached.  It usually
+triangulation. This ensures that all the triangles in the mesh
+are truly Delaunay, and not merely constrained Delaunay. This
+option invokes Ruppert's original algorithm, which splits every
+subsegment whose diametral circle is encroached. It usually
 increases the number of vertices and triangles.}
 
-\item{S}{Specifies the maximum number of added Steiner points.}
+\item{S}{Specifies the maximum number of added Steiner points. If
+set to \code{Inf}, there is no limit on the number of Steine
+points added - but this can lead to huge amounts of memory being
+allocated.}
 
-\item{V}{Verbosity level. Specify higher values  for more detailed
+\item{V}{Verbosity level. Specify higher values for more detailed
 information about what the Triangle library is doing.}
 
 \item{Q}{If \code{TRUE} suppresses all explanation of what the
@@ -39,9 +42,9 @@ Triangle library is doing, unless an error occurs.}
 }
 \value{
 A object with class \code{triangulation}. This contains
-the information in the same format as the  PSLG, \code{p}, with an
-updated list of points \code{P} and point attributes \code{PA},
-along with the following variables:
+  the information in the same format as the PSLG, \code{p}, with
+  an updated list of points \code{P} and point attributes
+  \code{PA}, along with the following variables:
 
 \item{\code{T}}{Triangulation specified as 3 column matrix
 in which each row contains indices in \code{P} of vertices.}
@@ -62,7 +65,7 @@ triangulation is a constrained conforming Delaunay triangulation
 in which additional vertices, called Steiner points, can be
 inserted into segments to improved the quality of the
 triangulation.  To prevent the insertion of Steiner points on
-boundary segments, specify \code{Y=1}. If the maximum triangle
+boundary segments, specify \code{Y=TRUE}. If the maximum triangle
 area \code{a} is specified, the area of each triangle is not
 allowed to exceed this value. If the the minimum angle \code{q} is
 specified, no triangle angle is allowed to be below this value.
