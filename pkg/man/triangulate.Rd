@@ -4,8 +4,17 @@
 \alias{triangulate}
 \title{Triangulate a Planar Straight Line Graph}
 \usage{
-triangulate(p, a = NULL, q = NULL, Y = FALSE, j = FALSE,
-  D = FALSE, S = 10000, V = 0, Q = TRUE)
+triangulate(
+  p,
+  a = NULL,
+  q = NULL,
+  Y = FALSE,
+  j = FALSE,
+  D = FALSE,
+  S = 10000,
+  V = 0,
+  Q = TRUE
+)
 }
 \arguments{
 \item{p}{Planar straight line graph object; see
@@ -95,7 +104,7 @@ plot(tA)
 ## is smaller than 20 degrees
 tA <- triangulate(A, q=20)
 plot(tA)
-## Triangulate the PSLG with triangles in which no triangle has 
+## Triangulate the PSLG with triangles in which no triangle has
 ## area greater than 0.001
 tA <- triangulate(A, a=0.001)
 plot(tA)

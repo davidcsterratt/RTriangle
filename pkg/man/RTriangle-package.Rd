@@ -38,7 +38,7 @@ plot(tA)
 ## is smaller than 20 degrees
 tA <- triangulate(A, q=20)
 plot(tA)
-## Triangulate the PSLG with triangles in which no triangle has 
+## Triangulate the PSLG with triangles in which no triangle has
 ## area greater than 0.001
 tA <- triangulate(A, a=0.001)
 plot(tA)

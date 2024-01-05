@@ -20,10 +20,9 @@ URL: https://github.com/davidcsterratt/RTriangle,
 Date: 2024-01-04
 Depends:
     R (>= 3.0.0)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3
 Suggests:
     testthat, geometry
 BugReports: https://github.com/davidcsterratt/RTriangle/issues
 Encoding: UTF-8
 Language: en-GB
-
