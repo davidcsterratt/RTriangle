@@ -7,6 +7,11 @@ BUG FIX
   Thanks to the CRAN maintainers for reporting this. Update
   fixes format to prevent compiler warning.
 
+* Fix for Issue #21: -Wformat= warnings bug
+  https://github.com/davidcsterratt/RTriangle/issues/21
+  Thanks to the CRAN maintainers for reporting this. Update
+  fixes format to prevent compiler warning.
+
 CHANGES IN VERSION 1.6-0.12  - Released 2023-01-14
 
 BUG FIX
