@@ -12,6 +12,12 @@ BUG FIX
   Thanks to the CRAN maintainers for reporting this. Update
   fixes format to prevent compiler warning.
 
+CODE IMPROVEMENT
+
+* Apply anyNA, and single definition of internal function
+  https://github.com/davidcsterratt/RTriangle/pull/9
+  Thanks to Michael Sumner for providing this improvement.
+
 CHANGES IN VERSION 1.6-0.12  - Released 2023-01-14
 
 BUG FIX
