@@ -406,25 +406,25 @@ SEXP R_triangulate (SEXP P, SEXP PB, SEXP PA, SEXP S, SEXP SB, SEXP(H), SEXP a, 
   UNPROTECT(15);
 
   /* Free all allocated arrays, including those allocated by Triangle. */
-  Free(mid.pointlist);
-  Free(mid.pointattributelist);
-  Free(mid.pointmarkerlist);
-  Free(mid.trianglelist);
-  Free(mid.triangleattributelist);
-  /* Free(mid.trianglearealist); */
-  Free(mid.neighborlist);
-  Free(mid.segmentlist);
-  Free(mid.segmentmarkerlist);
-  Free(mid.edgelist);
-  Free(mid.edgemarkerlist);
-  Free(vorout.pointlist);
-  Free(vorout.pointattributelist);
-  Free(vorout.edgelist);
-  Free(vorout.normlist);
-  /*  Free(out.pointlist);
-  Free(out.pointattributelist);
-  Free(out.trianglelist);
-  Free(out.triangleattributelist); */
+  R_Free(mid.pointlist);
+  R_Free(mid.pointattributelist);
+  R_Free(mid.pointmarkerlist);
+  R_Free(mid.trianglelist);
+  R_Free(mid.triangleattributelist);
+  /* R_Free(mid.trianglearealist); */
+  R_Free(mid.neighborlist);
+  R_Free(mid.segmentlist);
+  R_Free(mid.segmentmarkerlist);
+  R_Free(mid.edgelist);
+  R_Free(mid.edgemarkerlist);
+  R_Free(vorout.pointlist);
+  R_Free(vorout.pointattributelist);
+  R_Free(vorout.edgelist);
+  R_Free(vorout.normlist);
+  /*  R_Free(out.pointlist);
+  R_Free(out.pointattributelist);
+  R_Free(out.trianglelist);
+  R_Free(out.triangleattributelist); */
 
   return(ans);
 } 

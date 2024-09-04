@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.6-0.14  - Released 2024-09-04
+
+BUG FIX
+
+* Fix for Issue #22: implicit declaration of function 'Free' with -DSTRICT_R_HEADERS=1
+  https://github.com/davidcsterratt/RTriangle/issues/22
+  Thanks to the CRAN maintainers for reporting this. Update renames
+  Free -> R_Free and Calloc -> R_Calloc.
+
 CHANGES IN VERSION 1.6-0.13  - Released 2024-01-04
 
 BUG FIX

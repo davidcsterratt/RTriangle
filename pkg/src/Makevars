@@ -2,5 +2,4 @@
 # Compliance with C99 standard can be tested wtih
 # -std=gnu99 -Wstrict-prototypes
 # with gcc-11 on Linux
-PKG_CPPFLAGS = -include RTriangle.h -DANSI_DECLARATORS -DVOID=void
-
+PKG_CPPFLAGS = -include RTriangle.h -DANSI_DECLARATORS -DVOID=void -DSTRICT_R_HEADERS

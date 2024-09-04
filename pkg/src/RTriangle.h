@@ -2,7 +2,6 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <stdint.h>
-#undef PI
 #define printf Rprintf
 #define TRILIBRARY
 /* Needed to ensure test test-triangulate/"triangulate can triangulate

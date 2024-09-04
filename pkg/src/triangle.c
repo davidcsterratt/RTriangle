@@ -1442,7 +1442,7 @@ int size;
    needs to be replaced to use R's memory allocation functions that
    doesn't crash R on error -- David Sterratt 2/11/12. */
   /* memptr = (VOID *) malloc((unsigned int) size); */
-  memptr = (VOID *) Calloc(size, unsigned char);
+  memptr = (VOID *) R_Calloc(size, unsigned char);
   if (memptr == (VOID *) NULL) {
     printf("Error:  Out of memory.\n");
     triexit(1);
@@ -1462,7 +1462,7 @@ VOID *memptr;
    needs to be replaced to use R's memory allocation functions that
    doesn't crash R on error -- David Sterratt 2/11/12. */
   /* free(memptr); */
-  Free(memptr);
+  R_Free(memptr);
 }
 
 /**                                                                         **/
