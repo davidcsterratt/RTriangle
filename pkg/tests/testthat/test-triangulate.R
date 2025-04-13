@@ -1,12 +1,13 @@
 context("triangulate")
 
-tri.area<- function(P, Pt) {
-  A <- P[Pt[,1],]
-  B <- P[Pt[,2],]
-  C <- P[Pt[,3],]
+tri.area <- function(P, Pt) {
+  A <- P[Pt[,1], , drop = FALSE]
+  B <- P[Pt[,2], , drop = FALSE]
+  C <- P[Pt[,3], , drop = FALSE]
   AB <- cbind(B - A, 0)
   BC <- cbind(C - B, 0)
-  return(0.5*abs(geometry::extprod3d(AB, BC)[,3]))
+  print(AB)
+  return(0.5*abs(geometry::extprod3d(AB, BC, drop=FALSE)[,3]))
 }
 
 
@@ -109,4 +110,73 @@ test_that("triangulate can triangulate an example that would create infinite num
   ## If S=Inf Gives calloc error ?
   tri <- triangulate(pslg(P=P, S=S), a=6100144/500, q=20, Y = TRUE, S=100)
   expect_equal(nrow(P) + 100, nrow(tri$P))
+})
+
+
+test_that("triangulate can reproduce an example that has given different results on Mac M1 with Apple Clang 17", {
+
+  triangulaten <- function(P, S, n=200, suppress.external.steiner=FALSE) {
+    ## First determine the area
+    out <- triangulate(pslg(P=P, S=S), Y=TRUE, j=TRUE, Q=TRUE)
+    A.tot <- sum(tri.area(out$P, out$T))
+
+    ## Produce refined triangulation
+    out <- triangulate(pslg(P=out$P, S=out$S), a=A.tot/n, q=20,
+                       Y=suppress.external.steiner, j=TRUE, Q=TRUE)
+    return(out)
+  }
+
+  P1 <- rbind(c(1,1),
+              c(2,1),
+              c(2.5,2),
+              c(3,1),
+              c(4,1),
+              c(1,4))
+  S1 <- cbind(1:6, c(2:6, 1))
+  out1 <- triangulaten(P1, S1)
+  # plot(out1)
+  # text(out1$P[,1], out1$P[,2], 1:nrow(out1$P))
+
+  P2 <- rbind(c(-1,1),
+              c(-1,4),
+              c(-2,3),
+              c(-2,2),
+              c(-3,2),
+              c(-4,1))
+  S2 <- cbind(1:6, c(2:6, 1))
+  out2 <- triangulaten(P2, S2)
+  # plot(out2)
+  # text(out2$P[,1], out2$P[,2], 1:nrow(out2$P))
+
+  P3 <- rbind(c(-4,-1),
+              c(-1,-1),
+              c(-1,-4))
+  S3 <- cbind(1:3, c(3, 1:2))
+  out3 <- triangulaten(P3, S3)
+  # plot(out3)
+  # text(out3$P[,1], out3$P[,2], 1:nrow(out3$P))
+
+  P4 <- rbind(c(1,-1),
+              c(2,-1),
+              c(2.5,-2),
+              c(3,-1),
+              c(4,-1),
+              c(1,-4))
+  S4 <- cbind(1:6, c(2:6, 1))
+  out4 <- triangulaten(P4, S4)
+  # plot(out4)
+  # text(out4$P[,1], out4$P[,2], 1:nrow(out4$P))
+
+  load(file.path(system.file(package = "RTriangle"), "extdata", "out1gcc.Rdata"))
+  expect_equal(out1$P, out1gcc$P)
+
+  load(file.path(system.file(package = "RTriangle"), "extdata", "out2gcc.Rdata"))
+  expect_equal(out2$P, out2gcc$P)
+
+  # The one that's caused problems
+  load(file.path(system.file(package = "RTriangle"), "extdata", "out3gcc.Rdata"))
+  expect_equal(out3$P, out3gcc$P)
+
+  load(file.path(system.file(package = "RTriangle"), "extdata", "out4gcc.Rdata"))
+  expect_equal(out4$P, out4gcc$P)
 })
