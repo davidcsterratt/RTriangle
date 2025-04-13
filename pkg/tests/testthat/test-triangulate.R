@@ -6,7 +6,6 @@ tri.area <- function(P, Pt) {
   C <- P[Pt[,3], , drop = FALSE]
   AB <- cbind(B - A, 0)
   BC <- cbind(C - B, 0)
-  print(AB)
   return(0.5*abs(geometry::extprod3d(AB, BC, drop=FALSE)[,3]))
 }
 
@@ -35,7 +34,7 @@ test_that("triangulate can trianglulate an object with a concavity subject to a 
 })
 
 test_that("If the input matrix contains NAs, triangulate should return an error", {
-  ps <- matrix(rnorm(999), ncol=2)
+  ps <- matrix(rnorm(1000), ncol=2)
   ps <- rbind(ps, NA)
   expect_error(triangulate(ps))
 })
