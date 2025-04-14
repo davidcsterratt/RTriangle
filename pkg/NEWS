@@ -4,8 +4,9 @@ BUG FIX
 
 * Fix for Issue #23: Some triangulations differ on Mac M1 architecture with Apple clang 17 from gcc
   https://github.com/davidcsterratt/RTriangle/issues/23
-  Thanks to the CRAN maintainers for identifying the issue in
-  Retistruct that led to finding this issue.
+  Thanks to the CRAN maintainers for identifying the issue in Retistruct
+  (https://github.com/davidcsterratt/retistruct/issues/74) that led to
+  finding this issue.
 
 CHANGES IN VERSION 1.6-0.14  - Released 2024-09-04
 
